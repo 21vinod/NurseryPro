@@ -67,7 +67,7 @@ foreach($results as $result)
 
                                    
                                         
-<img src="admin/bookimg/<?php echo htmlentities($result->bookImage);?>" width="100">
+<img src="bookimg/<?php echo htmlentities($result->bookImage);?>" width="100">
                                                 <br /><b><?php echo htmlentities($result->BookName);?></b><br />
                                                 <?php echo htmlentities($result->CategoryName);?><br />
                                             <?php echo htmlentities($result->AuthorName);?><br />

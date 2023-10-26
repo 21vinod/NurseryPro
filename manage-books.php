@@ -1,39 +1,22 @@
 <?php
 session_start();
 error_reporting(0);
-include('../includes/config.php');
+include('includes/config.php');
 if(strlen($_SESSION['alogin'])==0)
     {   
 header('location:index.php');
 }
 else{ 
-
-// code for block student    
-if(isset($_GET['inid']))
+if(isset($_GET['del']))
 {
-$id=$_GET['inid'];
-$status=0;
-$sql = "update tblstudents set Status=:status  WHERE id=:id";
+$id=$_GET['del'];
+$sql = "delete from tblbooks  WHERE id=:id";
 $query = $dbh->prepare($sql);
 $query -> bindParam(':id',$id, PDO::PARAM_STR);
-$query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query -> execute();
-header('location:reg-students.php');
-}
+$_SESSION['delmsg']="Category deleted scuccessfully ";
+header('location:manage-books.php');
 
-
-
-//code for active students
-if(isset($_GET['id']))
-{
-$id=$_GET['id'];
-$status=1;
-$sql = "update tblstudents set Status=:status  WHERE id=:id";
-$query = $dbh->prepare($sql);
-$query -> bindParam(':id',$id, PDO::PARAM_STR);
-$query -> bindParam(':status',$status, PDO::PARAM_STR);
-$query -> execute();
-header('location:reg-students.php');
 }
 
 
@@ -45,7 +28,7 @@ header('location:reg-students.php');
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Online Library Management System | Student History</title>
+    <title>Online Library Management System | Manage Books</title>
     <!-- BOOTSTRAP CORE STYLE  -->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FONT AWESOME STYLE  -->
@@ -60,15 +43,15 @@ header('location:reg-students.php');
 </head>
 <body>
       <!------MENU SECTION START-->
-<?php include('../includes/header.php');?>
+<?php include('includes/admin-header.php');?>
 <!-- MENU SECTION END-->
     <div class="content-wrapper">
          <div class="container">
         <div class="row pad-botm">
             <div class="col-md-12">
-                <?php $sid=$_GET['stdid']; ?>
-                <h4 class="header-line">#<?php echo $sid;?> Book Issued History</h4>
+                <h4 class="header-line">Manage Books</h4>
     </div>
+  
 
 
         </div>
@@ -77,8 +60,7 @@ header('location:reg-students.php');
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-
-<?php echo $sid;?> Details
+                           Books Listing
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -86,19 +68,16 @@ header('location:reg-students.php');
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Student ID</th>
-                                            <th>Student Name</th>
-                                            <th>Issued Book  </th>
-                                            <th>Issued Date</th>
-                                            <th>Returned Date</th>
-                                            <th>Fine (if any)</th>
-          
+                                            <th>Book Name</th>
+                                            <th>Category</th>
+                                            <th>Author</th>
+                                            <th>ISBN</th>
+                                            <th>Price</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-<?php 
-
-$sql = "SELECT tblstudents.StudentId ,tblstudents.FullName,tblstudents.EmailId,tblstudents.MobileNumber,tblbooks.BookName,tblbooks.ISBNNumber,tblissuedbookdetails.IssuesDate,tblissuedbookdetails.ReturnDate,tblissuedbookdetails.id as rid,tblissuedbookdetails.fine,tblissuedbookdetails.RetrunStatus,tblbooks.id as bid,tblbooks.bookImage from  tblissuedbookdetails join tblstudents on tblstudents.StudentId=tblissuedbookdetails.StudentId join tblbooks on tblbooks.id=tblissuedbookdetails.BookId where tblstudents.StudentId='$sid' ";
+<?php $sql = "SELECT tblbooks.BookName,tblcategory.CategoryName,tblauthors.AuthorName,tblbooks.ISBNNumber,tblbooks.BookPrice,tblbooks.id as bookid,tblbooks.bookImage from  tblbooks join tblcategory on tblcategory.id=tblbooks.CatId join tblauthors on tblauthors.id=tblbooks.AuthorId";
 $query = $dbh -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -109,17 +88,18 @@ foreach($results as $result)
 {               ?>                                      
                                         <tr class="odd gradeX">
                                             <td class="center"><?php echo htmlentities($cnt);?></td>
-                                            <td class="center"><?php echo htmlentities($result->StudentId);?></td>
-                                            <td class="center"><?php echo htmlentities($result->FullName);?></td>
-                                            <td class="center"><?php echo htmlentities($result->BookName);?></td>
-                                            <td class="center"><?php echo htmlentities($result->IssuesDate);?></td>
-                                            <td class="center"><?php if($result->ReturnDate==''): echo "Not returned yet";
-                                            else: echo htmlentities($result->ReturnDate); endif;?></td>
-                                             <td class="center"><?php if($result->ReturnDate==''): echo "Not returned yet";
-                                              else: echo $result->fine; endif;
-                                             ?></td>
-                                            
-                            
+                                            <td class="center" width="300">
+<img src="bookimg/<?php echo htmlentities($result->bookImage);?>" width="100">
+                                                <br /><b><?php echo htmlentities($result->BookName);?></b></td>
+                                            <td class="center"><?php echo htmlentities($result->CategoryName);?></td>
+                                            <td class="center"><?php echo htmlentities($result->AuthorName);?></td>
+                                            <td class="center"><?php echo htmlentities($result->ISBNNumber);?></td>
+                                            <td class="center"><?php echo htmlentities($result->BookPrice);?></td>
+                                            <td class="center">
+
+                                            <a href="edit-book.php?bookid=<?php echo htmlentities($result->bookid);?>"><button class="btn btn-primary"><i class="fa fa-edit "></i> Edit</button> 
+                                          <a href="manage-books.php?del=<?php echo htmlentities($result->bookid);?>" onclick="return confirm('Are you sure you want to delete?');"" >  <button class="btn btn-danger"><i class="fa fa-pencil"></i> Delete</button>
+                                            </td>
                                         </tr>
  <?php $cnt=$cnt+1;}} ?>                                      
                                     </tbody>
@@ -138,18 +118,18 @@ foreach($results as $result)
     </div>
 
      <!-- CONTENT-WRAPPER SECTION END-->
-  <?php include('../includes/footer.php');?>
+  <?php include('includes/footer.php');?>
       <!-- FOOTER SECTION END-->
     <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
     <!-- CORE JQUERY  -->
-    <script src="../assets/js/jquery-1.10.2.js"></script>
+    <script src="assets/js/jquery-1.10.2.js"></script>
     <!-- BOOTSTRAP SCRIPTS  -->
-    <script src="../assets/js/bootstrap.js"></script>
+    <script src="assets/js/bootstrap.js"></script>
     <!-- DATATABLE SCRIPTS  -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
     <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
       <!-- CUSTOM SCRIPTS  -->
-    <script src="../assets/js/custom.js"></script>
+    <script src="assets/js/custom.js"></script>
 </body>
 </html>
 <?php } ?>

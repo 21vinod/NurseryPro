@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-include('../includes/config.php');
+include('includes/config.php');
 if(strlen($_SESSION['alogin'])==0)
     {   
 header('location:index.php');
@@ -44,7 +44,7 @@ header('location:manage-authors.php');
 </head>
 <body>
       <!------MENU SECTION START-->
-<?php include('../includes/header.php');?>
+<?php include('includes/admin-header.php');?>
 <!-- MENU SECTION END-->
     <div class="content-wra
     <div class="content-wrapper">
@@ -94,15 +94,15 @@ foreach($results as $result)
     </div>
     </div>
      <!-- CONTENT-WRAPPER SECTION END-->
-  <?php include('../includes/footer.php');?>
+  <?php include('includes/footer.php');?>
       <!-- FOOTER SECTION END-->
     <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
     <!-- CORE JQUERY  -->
-    <script src="../assets/js/jquery-1.10.2.js"></script>
+    <script src="assets/js/jquery-1.10.2.js"></script>
     <!-- BOOTSTRAP SCRIPTS  -->
-    <script src="../assets/js/bootstrap.js"></script>
+    <script src="assets/js/bootstrap.js"></script>
       <!-- CUSTOM SCRIPTS  -->
-    <script src="../assets/js/custom.js"></script>
+    <script src="assets/js/custom.js"></script>
 </body>
 </html>
 <?php } ?>

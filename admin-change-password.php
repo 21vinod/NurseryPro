@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('../includes/config.php');
+include('includes/config.php');
 error_reporting(0);
 if(strlen($_SESSION['alogin'])==0)
     {   
@@ -83,7 +83,7 @@ return true;
 
 <body>
     <!------MENU SECTION START-->
-<?php include('../includes/header.php');?>
+<?php include('includes/header.php');?>
 <!-- MENU SECTION END-->
 <div class="content-wrapper">
 <div class="container">
@@ -131,13 +131,13 @@ Change Password
     </div>
     </div>
      <!-- CONTENT-WRAPPER SECTION END-->
- <?php include('../includes/footer.php');?>
+ <?php include('includes/footer.php');?>
       <!-- FOOTER SECTION END-->
-    <script src="../assets/js/jquery-1.10.2.js"></script>
+    <script src="assets/js/jquery-1.10.2.js"></script>
     <!-- BOOTSTRAP SCRIPTS  -->
-    <script src="../assets/js/bootstrap.js"></script>
+    <script src="assets/js/bootstrap.js"></script>
       <!-- CUSTOM SCRIPTS  -->
-    <script src="../assets/js/custom.js"></script>
+    <script src="assets/js/custom.js"></script>
 </body>
 </html>
 <?php } ?>

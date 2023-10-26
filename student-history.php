@@ -1,13 +1,40 @@
 <?php
 session_start();
 error_reporting(0);
-include('../includes/config.php');
+include('includes/config.php');
 if(strlen($_SESSION['alogin'])==0)
     {   
 header('location:index.php');
 }
 else{ 
 
+// code for block student    
+if(isset($_GET['inid']))
+{
+$id=$_GET['inid'];
+$status=0;
+$sql = "update tblstudents set Status=:status  WHERE id=:id";
+$query = $dbh->prepare($sql);
+$query -> bindParam(':id',$id, PDO::PARAM_STR);
+$query -> bindParam(':status',$status, PDO::PARAM_STR);
+$query -> execute();
+header('location:reg-students.php');
+}
+
+
+
+//code for active students
+if(isset($_GET['id']))
+{
+$id=$_GET['id'];
+$status=1;
+$sql = "update tblstudents set Status=:status  WHERE id=:id";
+$query = $dbh->prepare($sql);
+$query -> bindParam(':id',$id, PDO::PARAM_STR);
+$query -> bindParam(':status',$status, PDO::PARAM_STR);
+$query -> execute();
+header('location:reg-students.php');
+}
 
 
     ?>
@@ -18,7 +45,7 @@ else{
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Online Library Management System | Manage Issued Books</title>
+    <title>Online Library Management System | Student History</title>
     <!-- BOOTSTRAP CORE STYLE  -->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FONT AWESOME STYLE  -->
@@ -33,50 +60,15 @@ else{
 </head>
 <body>
       <!------MENU SECTION START-->
-<?php include('../includes/header.php');?>
+<?php include('includes/header.php');?>
 <!-- MENU SECTION END-->
     <div class="content-wrapper">
          <div class="container">
         <div class="row pad-botm">
             <div class="col-md-12">
-                <h4 class="header-line">Manage Issued Books</h4>
+                <?php $sid=$_GET['stdid']; ?>
+                <h4 class="header-line">#<?php echo $sid;?> Book Issued History</h4>
     </div>
-     <div class="row">
-    <?php if($_SESSION['error']!="")
-    {?>
-<div class="col-md-6">
-<div class="alert alert-danger" >
- <strong>Error :</strong> 
- <?php echo htmlentities($_SESSION['error']);?>
-<?php echo htmlentities($_SESSION['error']="");?>
-</div>
-</div>
-<?php } ?>
-<?php if($_SESSION['msg']!="")
-{?>
-<div class="col-md-6">
-<div class="alert alert-success" >
- <strong>Success :</strong> 
- <?php echo htmlentities($_SESSION['msg']);?>
-<?php echo htmlentities($_SESSION['msg']="");?>
-</div>
-</div>
-<?php } ?>
-
-
-
-   <?php if($_SESSION['delmsg']!="")
-    {?>
-<div class="col-md-6">
-<div class="alert alert-success" >
- <strong>Success :</strong> 
- <?php echo htmlentities($_SESSION['delmsg']);?>
-<?php echo htmlentities($_SESSION['delmsg']="");?>
-</div>
-</div>
-<?php } ?>
-
-</div>
 
 
         </div>
@@ -85,7 +77,8 @@ else{
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                          Issued Books 
+
+<?php echo $sid;?> Details
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -93,16 +86,19 @@ else{
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>Student ID</th>
                                             <th>Student Name</th>
-                                            <th>Book Name</th>
-                                            <th>ISBN </th>
+                                            <th>Issued Book  </th>
                                             <th>Issued Date</th>
-                                            <th>Return Date</th>
-                                            <th>Action</th>
+                                            <th>Returned Date</th>
+                                            <th>Fine (if any)</th>
+          
                                         </tr>
                                     </thead>
                                     <tbody>
-<?php $sql = "SELECT tblstudents.FullName,tblbooks.BookName,tblbooks.ISBNNumber,tblissuedbookdetails.IssuesDate,tblissuedbookdetails.ReturnDate,tblissuedbookdetails.id as rid from  tblissuedbookdetails join tblstudents on tblstudents.StudentId=tblissuedbookdetails.StudentId join tblbooks on tblbooks.id=tblissuedbookdetails.BookId order by tblissuedbookdetails.id desc";
+<?php 
+
+$sql = "SELECT tblstudents.StudentId ,tblstudents.FullName,tblstudents.EmailId,tblstudents.MobileNumber,tblbooks.BookName,tblbooks.ISBNNumber,tblissuedbookdetails.IssuesDate,tblissuedbookdetails.ReturnDate,tblissuedbookdetails.id as rid,tblissuedbookdetails.fine,tblissuedbookdetails.RetrunStatus,tblbooks.id as bid,tblbooks.bookImage from  tblissuedbookdetails join tblstudents on tblstudents.StudentId=tblissuedbookdetails.StudentId join tblbooks on tblbooks.id=tblissuedbookdetails.BookId where tblstudents.StudentId='$sid' ";
 $query = $dbh -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -113,24 +109,17 @@ foreach($results as $result)
 {               ?>                                      
                                         <tr class="odd gradeX">
                                             <td class="center"><?php echo htmlentities($cnt);?></td>
+                                            <td class="center"><?php echo htmlentities($result->StudentId);?></td>
                                             <td class="center"><?php echo htmlentities($result->FullName);?></td>
                                             <td class="center"><?php echo htmlentities($result->BookName);?></td>
-                                            <td class="center"><?php echo htmlentities($result->ISBNNumber);?></td>
                                             <td class="center"><?php echo htmlentities($result->IssuesDate);?></td>
-                                            <td class="center"><?php if($result->ReturnDate=="")
-                                            {
-                                                echo htmlentities("Not Return Yet");
-                                            } else {
-
-
-                                            echo htmlentities($result->ReturnDate);
-}
-                                            ?></td>
-                                            <td class="center">
-
-                                            <a href="update-issue-bookdeails.php?rid=<?php echo htmlentities($result->rid);?>"><button class="btn btn-primary"><i class="fa fa-edit "></i> Edit</button> 
-                                         
-                                            </td>
+                                            <td class="center"><?php if($result->ReturnDate==''): echo "Not returned yet";
+                                            else: echo htmlentities($result->ReturnDate); endif;?></td>
+                                             <td class="center"><?php if($result->ReturnDate==''): echo "Not returned yet";
+                                              else: echo $result->fine; endif;
+                                             ?></td>
+                                            
+                            
                                         </tr>
  <?php $cnt=$cnt+1;}} ?>                                      
                                     </tbody>
@@ -149,18 +138,18 @@ foreach($results as $result)
     </div>
 
      <!-- CONTENT-WRAPPER SECTION END-->
-  <?php include('../includes/footer.php');?>
+  <?php include('includes/footer.php');?>
       <!-- FOOTER SECTION END-->
     <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
     <!-- CORE JQUERY  -->
-    <script src="../assets/js/jquery-1.10.2.js"></script>
+    <script src="assets/js/jquery-1.10.2.js"></script>
     <!-- BOOTSTRAP SCRIPTS  -->
-    <script src="../assets/js/bootstrap.js"></script>
+    <script src="assets/js/bootstrap.js"></script>
     <!-- DATATABLE SCRIPTS  -->
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>
     <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
       <!-- CUSTOM SCRIPTS  -->
-    <script src="../assets/js/custom.js"></script>
+    <script src="assets/js/custom.js"></script>
 </body>
 </html>
 <?php } ?>

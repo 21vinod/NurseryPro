@@ -1,5 +1,5 @@
 <?php 
-require_once("../includes/config.php");
+require_once("includes/config.php");
 //code check email
 if(!empty($_POST["isbn"])) {
 $isbn=$_POST["isbn"];

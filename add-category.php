@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-include('../includes/config.php');
+include('includes/config.php');
 if(strlen($_SESSION['alogin'])==0)
     {   
 header('location:index.php');
@@ -10,21 +10,23 @@ else{
 
 if(isset($_POST['create']))
 {
-$author=$_POST['author'];
-$sql="INSERT INTO  tblauthors(AuthorName) VALUES(:author)";
+$category=$_POST['category'];
+$status=$_POST['status'];
+$sql="INSERT INTO  tblcategory(CategoryName,Status) VALUES(:category,:status)";
 $query = $dbh->prepare($sql);
-$query->bindParam(':author',$author,PDO::PARAM_STR);
+$query->bindParam(':category',$category,PDO::PARAM_STR);
+$query->bindParam(':status',$status,PDO::PARAM_STR);
 $query->execute();
 $lastInsertId = $dbh->lastInsertId();
 if($lastInsertId)
 {
-$_SESSION['msg']="Author Listed successfully";
-header('location:manage-authors.php');
+$_SESSION['msg']="Brand Listed successfully";
+header('location:manage-categories.php');
 }
 else 
 {
 $_SESSION['error']="Something went wrong. Please try again";
-header('location:manage-authors.php');
+header('location:manage-categories.php');
 }
 
 }
@@ -36,27 +38,27 @@ header('location:manage-authors.php');
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Online Library Management System | Add Author</title>
+    <title>Online Library Management System | Add Categories</title>
     <!-- BOOTSTRAP CORE STYLE  -->
-    <link href="../assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FONT AWESOME STYLE  -->
-    <link href="../assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
     <!-- CUSTOM STYLE  -->
-    <link href="../assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/style.css" rel="stylesheet" />
     <!-- GOOGLE FONT -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
 </head>
 <body>
       <!------MENU SECTION START-->
-<?php include('../includes/header.php');?>
+<?php include('includes/admin-header.php');?>
 <!-- MENU SECTION END-->
     <div class="content-wra
     <div class="content-wrapper">
          <div class="container">
         <div class="row pad-botm">
             <div class="col-md-12">
-                <h4 class="header-line">Add Author</h4>
+                <h4 class="header-line">Add category</h4>
                 
                             </div>
 
@@ -65,16 +67,29 @@ header('location:manage-authors.php');
 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3"">
 <div class="panel panel-info">
 <div class="panel-heading">
-Author Info
+Category Info
 </div>
 <div class="panel-body">
 <form role="form" method="post">
 <div class="form-group">
-<label>Author Name</label>
-<input class="form-control" type="text" name="author" autocomplete="off"  required />
+<label>Category Name</label>
+<input class="form-control" type="text" name="category" autocomplete="off" required />
+</div>
+<div class="form-group">
+<label>Status</label>
+ <div class="radio">
+<label>
+<input type="radio" name="status" id="status" value="1" checked="checked">Active
+</label>
+</div>
+<div class="radio">
+<label>
+<input type="radio" name="status" id="status" value="0">Inactive
+</label>
 </div>
 
-<button type="submit" name="create" class="btn btn-info">Add </button>
+</div>
+<button type="submit" name="create" class="btn btn-info">Create </button>
 
                                     </form>
                             </div>
@@ -86,15 +101,15 @@ Author Info
     </div>
     </div>
      <!-- CONTENT-WRAPPER SECTION END-->
-  <?php include('../includes/footer.php');?>
+  <?php include('includes/footer.php');?>
       <!-- FOOTER SECTION END-->
     <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
     <!-- CORE JQUERY  -->
-    <script src="../assets/js/jquery-1.10.2.js"></script>
+    <script src="assets/js/jquery-1.10.2.js"></script>
     <!-- BOOTSTRAP SCRIPTS  -->
-    <script src="../assets/js/bootstrap.js"></script>
+    <script src="assets/js/bootstrap.js"></script>
       <!-- CUSTOM SCRIPTS  -->
-    <script src="../assets/js/custom.js"></script>
+    <script src="assets/js/custom.js"></script>
 </body>
 </html>
 <?php } ?>
