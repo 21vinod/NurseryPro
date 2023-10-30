@@ -37,7 +37,7 @@ echo "<script>window.location.href='manage-books.php'</script>";
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Online Library Management System | Edit Book</title>
+    <title>NurseryPro | Edit Book</title>
     <!-- BOOTSTRAP CORE STYLE  -->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FONT AWESOME STYLE  -->
@@ -85,8 +85,8 @@ foreach($results as $result)
 <div class="col-md-6">
 <div class="form-group">
 <label>Book Image</label>
-<img src="bookimg/<?php echo htmlentities($result->bookImage);?>" width="100">
-<a href="change-bookimg.php?bookid=<?php echo htmlentities($result->bookid);?>">Change Book Image</a>
+<img src="img/<?php echo htmlentities($result->bookImage);?>" width="100">
+<a href="change-img.php?bookid=<?php echo htmlentities($result->bookid);?>">Change Book Image</a>
 </div></div>
 
 <div class="col-md-6">

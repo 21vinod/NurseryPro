@@ -18,7 +18,7 @@ if($query -> rowCount() > 0){
   <tr>
 <?php foreach ($results as $result) {?>
     <th style="padding-left:5%; width: 10%;">
-<img src="bookimg/<?php echo htmlentities($result->bookImage); ?>" width="120"><br />
+<img src="img/<?php echo htmlentities($result->bookImage); ?>" width="120"><br />
       <?php echo htmlentities($result->BookName); ?><br />
     <?php echo htmlentities($result->AuthorName); ?><br />
     <?php if($result->isIssued=='1'): ?>

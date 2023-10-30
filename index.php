@@ -42,7 +42,7 @@ if (isset($_POST['login'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Online Library Management System | </title>
+    <title>NurseryPro</title>
     <!-- BOOTSTRAP CORE STYLE  -->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FONT AWESOME STYLE  -->
@@ -66,10 +66,10 @@ if (isset($_POST['login'])) {
                     <div id="carousel-example" class="carousel slide slide-bdr" data-ride="carousel">
                         <div class="carousel-inner">
                             <div class="item active">
-                                <img src="assets/img/1.jpg" alt="" />
+                                <img src="assets/img/1.png" alt="" />
                             </div>
                             <div class="item">
-                                <img src="assets/img/2.jpg" alt="" />
+                                <img src="assets/img/2.png" alt="" />
                             </div>
                             <div class="item">
                                 <img src="assets/img/3.jpg" alt="" />

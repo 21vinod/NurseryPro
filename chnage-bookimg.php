@@ -12,19 +12,19 @@ if(isset($_POST['update']))
 {
 
 $bookid=intval($_GET['bookid']);
-$bookimg=$_FILES["bookpic"]["name"];
+$img=$_FILES["bookpic"]["name"];
 //currentimage
 $cimage=$_POST['curremtimage'];
-$cpath="bookimg"."/".$cimage;
+$cpath="img"."/".$cimage;
 // get the image extension
-$extension = substr($bookimg,strlen($bookimg)-4,strlen($bookimg));
+$extension = substr($img,strlen($img)-4,strlen($img));
 // allowed extensions
 $allowed_extensions = array(".jpg","jpeg",".png",".gif");
 // Validation for allowed extensions .in_array() function searches an array for a specific value.
 //rename the image file
-$imgnewname=md5($bookimg.time()).$extension;
+$imgnewname=md5($img.time()).$extension;
 // Code for move image into directory
-move_uploaded_file($_FILES["bookpic"]["tmp_name"],"bookimg/".$imgnewname);
+move_uploaded_file($_FILES["bookpic"]["tmp_name"],"img/".$imgnewname);
 if(!in_array($extension,$allowed_extensions))
 {
 echo "<script>alert('Invalid format. Only jpg / jpeg/ png /gif format allowed');</script>";
@@ -50,7 +50,7 @@ echo "<script>window.location.href='manage-books.php'</script>";
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Online Library Management System | Edit Book</title>
+    <title>NurseryPro | Edit Book</title>
     <!-- BOOTSTRAP CORE STYLE  -->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FONT AWESOME STYLE  -->
@@ -98,7 +98,7 @@ foreach($results as $result)
 <div class="col-md-6">
 <div class="form-group">
 <label>Book Image</label>
-<img src="bookimg/<?php echo htmlentities($result->bookImage);?>" width="100">
+<img src="img/<?php echo htmlentities($result->bookImage);?>" width="100">
 </div></div>
 
 <div class="col-md-6">

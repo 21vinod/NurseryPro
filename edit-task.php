@@ -10,16 +10,17 @@ else{
 
 if(isset($_POST['update']))
 {
-$athrid=intval($_GET['athrid']);
-$author=$_POST['author'];
-$sql="update  tblauthors set AuthorName=:author where id=:athrid";
+$category=$_POST['category'];
+$status=$_POST['status'];
+$catid=intval($_GET['catid']);
+$sql="update  tblcategory set CategoryName=:category,Status=:status where id=:catid";
 $query = $dbh->prepare($sql);
-$query->bindParam(':author',$author,PDO::PARAM_STR);
-$query->bindParam(':athrid',$athrid,PDO::PARAM_STR);
+$query->bindParam(':category',$category,PDO::PARAM_STR);
+$query->bindParam(':status',$status,PDO::PARAM_STR);
+$query->bindParam(':catid',$catid,PDO::PARAM_STR);
 $query->execute();
-$_SESSION['updatemsg']="Author info updated successfully";
-header('location:manage-authors.php');
-
+$_SESSION['updatemsg']="Brand updated successfully";
+header('location:manage-categories.php');
 
 
 }
@@ -31,7 +32,7 @@ header('location:manage-authors.php');
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Online Library Management System | Add Author</title>
+    <title>NurseryPro | Edit Categories</title>
     <!-- BOOTSTRAP CORE STYLE  -->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FONT AWESOME STYLE  -->
@@ -51,7 +52,7 @@ header('location:manage-authors.php');
          <div class="container">
         <div class="row pad-botm">
             <div class="col-md-12">
-                <h4 class="header-line">Add Author</h4>
+                <h4 class="header-line">Edit category</h4>
                 
                             </div>
 
@@ -60,28 +61,54 @@ header('location:manage-authors.php');
 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3"">
 <div class="panel panel-info">
 <div class="panel-heading">
-Author Info
+Category Info
 </div>
+ 
 <div class="panel-body">
 <form role="form" method="post">
-<div class="form-group">
-<label>Author Name</label>
 <?php 
-$athrid=intval($_GET['athrid']);
-$sql = "SELECT * from  tblauthors where id=:athrid";
-$query = $dbh -> prepare($sql);
-$query->bindParam(':athrid',$athrid,PDO::PARAM_STR);
+$catid=intval($_GET['catid']);
+$sql="SELECT * from tblcategory where id=:catid";
+$query=$dbh->prepare($sql);
+$query-> bindParam(':catid',$catid, PDO::PARAM_STR);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
 if($query->rowCount() > 0)
 {
 foreach($results as $result)
-{               ?>   
-<input class="form-control" type="text" name="author" value="<?php echo htmlentities($result->AuthorName);?>" required />
-<?php }} ?>
+{               
+  ?> 
+<div class="form-group">
+<label>Category Name</label>
+<input class="form-control" type="text" name="category" value="<?php echo htmlentities($result->CategoryName);?>" required />
 </div>
-
+<div class="form-group">
+<label>Status</label>
+<?php if($result->Status==1) {?>
+ <div class="radio">
+<label>
+<input type="radio" name="status" id="status" value="1" checked="checked">Active
+</label>
+</div>
+<div class="radio">
+<label>
+<input type="radio" name="status" id="status" value="0">Inactive
+</label>
+</div>
+<?php } else { ?>
+<div class="radio">
+<label>
+<input type="radio" name="status" id="status" value="0" checked="checked">Inactive
+</label>
+</div>
+ <div class="radio">
+<label>
+<input type="radio" name="status" id="status" value="1">Active
+</label>
+</div
+<?php } ?>
+</div>
+<?php }} ?>
 <button type="submit" name="update" class="btn btn-info">Update </button>
 
                                     </form>

@@ -15,14 +15,14 @@ $category=$_POST['category'];
 $author=$_POST['author'];
 $isbn=$_POST['isbn'];
 $price=$_POST['price'];
-$bookimg=$_FILES["bookpic"]["name"];
+$img=$_FILES["bookpic"]["name"];
 // get the image extension
-$extension = substr($bookimg,strlen($bookimg)-4,strlen($bookimg));
+$extension = substr($img,strlen($img)-4,strlen($img));
 // allowed extensions
 $allowed_extensions = array(".jpg","jpeg",".png",".gif");
 // Validation for allowed extensions .in_array() function searches an array for a specific value.
 //rename the image file
-$imgnewname=md5($bookimg.time()).$extension;
+$imgnewname=md5($img.time()).$extension;
 // Code for move image into directory
 
 if(!in_array($extension,$allowed_extensions))
@@ -31,7 +31,7 @@ echo "<script>alert('Invalid format. Only jpg / jpeg/ png /gif format allowed');
 }
 else
 {
-move_uploaded_file($_FILES["bookpic"]["tmp_name"],"bookimg/".$imgnewname);
+move_uploaded_file($_FILES["bookpic"]["tmp_name"],"img/".$imgnewname);
 $sql="INSERT INTO  tblbooks(BookName,CatId,AuthorId,ISBNNumber,BookPrice,bookImage) VALUES(:bookname,:category,:author,:isbn,:price,:imgnewname)";
 $query = $dbh->prepare($sql);
 $query->bindParam(':bookname',$bookname,PDO::PARAM_STR);
@@ -61,7 +61,7 @@ echo "<script>window.location.href='manage-books.php'</script>";
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Online Library Management System | Add Book</title>
+    <title>NurseryPro | Add Book</title>
     <!-- BOOTSTRAP CORE STYLE  -->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FONT AWESOME STYLE  -->
