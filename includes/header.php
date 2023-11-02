@@ -28,7 +28,27 @@
                     <div class="navbar-collapse collapse ">
                         <ul id="menu-top" class="nav navbar-nav navbar-right">
                             <li><a href="dashboard.php" class="menu-top-active">DASHBOARD</a></li>
-                            <li><a href="issued-books.php">Issued Books</a></li>
+                            <li>
+                                <a href="#" class="dropdown-toggle" id="ddlmenuItem" data-toggle="dropdown"> <i
+                                        class="fa fa-angle-down">Tasks</i></a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="ddlmenuItem">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="my-tasks.php">My
+                                            Tasks</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="manage-tasks.php">Manage
+                                            Tasks</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-toggle" id="ddlmenuItem" data-toggle="dropdown"> <i
+                                        class="fa fa-angle-down">Requests</i></a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="ddlmenuItem">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="add-request.php">Add
+                                            Request</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1"
+                                            href="manage-requests.php">Manage
+                                            Requests</a></li>
+                                </ul>
+                            </li>
                             <li>
                                 <a href="#" class="dropdown-toggle" id="ddlmenuItem" data-toggle="dropdown"> Account <i
                                         class="fa fa-angle-down"></i></a>

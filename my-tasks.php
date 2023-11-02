@@ -13,7 +13,7 @@ if (strlen($_SESSION['login']) == 0) {
         $query->bindParam(':taskid', $id, PDO::PARAM_STR);
         $query->execute();
         $_SESSION['assignmsg'] = "Assigned successfully";
-        header('location:issued-books.php');
+        header('location:my-tasks.php');
     }
 
 
@@ -26,7 +26,7 @@ if (strlen($_SESSION['login']) == 0) {
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>NurseryPro | Issued Books</title>
+        <title>NurseryPro | My Tasks</title>
         <!-- BOOTSTRAP CORE STYLE  -->
         <link href="assets/css/bootstrap.css" rel="stylesheet" />
         <!-- FONT AWESOME STYLE  -->
@@ -42,7 +42,13 @@ if (strlen($_SESSION['login']) == 0) {
 
     <body>
         <!------MENU SECTION START-->
-        <?php include('includes/header.php'); ?>
+        <?php
+        if (strlen($_SESSION['login']) != 0) {
+            include 'includes/header.php';
+        } else if (strlen($_SESSION['alogin']) != 0) {
+            include 'includes/admin-header.php';
+        }
+        ?>
         <!-- MENU SECTION END-->
 
         <!-- My tasks -->
@@ -107,7 +113,7 @@ if (strlen($_SESSION['login']) == 0) {
                                                             <td class="center">
                                                                 
                                                                     <input type='hidden' name='taskId' value=<?php echo htmlentities($result->id); ?>>
-                                                                    <a href="issued-books.php?assign=<?php echo htmlentities($result->id); ?>"
+                                                                    <a href="my-tasks.php?assign=<?php echo htmlentities($result->id); ?>"
                                                                         onclick="return confirm('Are you sure you want to Assign the task?');">
                                                                         <button type="button" class="btn btn-danger"><i
                                                                             class="fa fa-pencil">Assign to
@@ -200,7 +206,7 @@ if (strlen($_SESSION['login']) == 0) {
                                                             <td class="center">
                                                                 
                                                                     <input type='hidden' name='taskId' value=<?php echo htmlentities($result->id); ?>>
-                                                                    <a href="issued-books.php?assign=<?php echo htmlentities($result->id); ?>"
+                                                                    <a href="my-tasks.php?assign=<?php echo htmlentities($result->id); ?>"
                                                                         onclick="return confirm('Are you sure you want to Assign the task?');">
                                                                         <button type="button" class="btn btn-danger"><i
                                                                             class="fa fa-pencil">Assign to

@@ -2,17 +2,17 @@
 session_start();
 error_reporting(0);
 include 'includes/config.php';
-if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
+if (strlen($_SESSION['login']) == 0 && strlen($_SESSION['alogin']) == 0) {
     header('location:index.php');
 } else {
     if (isset($_GET['del'])) {
         $id = $_GET['del'];
-        $sql = "delete from tblcategory  WHERE id=:id";
+        $sql = "delete from assistance  WHERE id=:id";
         $query = $dbh->prepare($sql);
         $query->bindParam(':id', $id, PDO::PARAM_STR);
         $query->execute();
-        $_SESSION['delmsg'] = "Category deleted scuccessfully ";
-        header('location:manage-categories.php');
+        $_SESSION['delmsg'] = "Request deleted scuccessfully ";
+        header('location:manage-requests.php');
 
     }
     ?>
@@ -25,7 +25,7 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>NurseryPro | Manage Categories</title>
+        <title>NurseryPro | Manage Requests</title>
         <!-- BOOTSTRAP CORE STYLE  -->
         <link href="assets/css/bootstrap.css" rel="stylesheet" />
         <!-- FONT AWESOME STYLE  -->
@@ -55,7 +55,7 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
             <div class="container">
                 <div class="row pad-botm">
                     <div class="col-md-12">
-                        <h4 class="header-line">Manage Tasks</h4>
+                        <h4 class="header-line">Manage Requests</h4>
                     </div>
                     <div class="row">
                         <?php if ($_SESSION['error'] != "") { ?>
@@ -110,15 +110,16 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Name</th>
-                                                    <th>Description</th>
-                                                    <th>Assigned Worker</th>
+                                                    <th>Task Id</th>
+                                                    <th>Request Details</th>
+                                                    <th>Requested By</th>
                                                     <th>Status</th>
+                                                    <th>Approval Details</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php $sql = "SELECT * from  tasks";
+                                                <?php $sql = "SELECT * from  assistance";
                                                 $query = $dbh->prepare($sql);
                                                 $query->execute();
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -128,29 +129,31 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
                                                         <tr class="odd gradeX">
                                                             <td class="center">
                                                                 <?php echo htmlentities($cnt); ?>
+                                                            </td> <!-- task_id	req_details	req_by	status	approval_details -->
+                                                            <td class="center">
+                                                                <?php echo htmlentities($result->task_id); ?>
                                                             </td>
                                                             <td class="center">
-                                                                <?php echo htmlentities($result->name); ?>
-                                                            </td>
-
-                                                            <td class="center">
-                                                                <?php echo htmlentities($result->description); ?>
+                                                                <?php echo htmlentities($result->req_details); ?>
                                                             </td>
                                                             <td class="center">
-                                                                <?php echo htmlentities($result->assigned_worker); ?>
+                                                                <?php echo htmlentities($result->req_by); ?>
                                                             </td>
                                                             <td class="center">
                                                                 <a href="#" class="btn btn-success btn-xs">
                                                                     <?php echo htmlentities($result->status); ?>
                                                                 </a>
-
                                                             </td>
                                                             <td class="center">
-                                                                <a href="edit-task.php?id=<?php echo htmlentities($result->id); ?>">
+                                                                <?php echo htmlentities($result->approval_details); ?>
+                                                            </td>
+                                                            <td class="center">
+                                                                <a
+                                                                    href="manage-requests.php?id=<?php echo htmlentities($result->id); ?>">
                                                                     <button class="btn btn-primary"><i class="fa fa-edit">Edit</i>
                                                                     </button>
                                                                 </a>
-                                                                <a href="manage-categories.php?del=<?php echo htmlentities($result->id); ?>"
+                                                                <a href="manage-requests.php?del=<?php echo htmlentities($result->id); ?>"
                                                                     onclick="return confirm('Are you sure you want to delete?');">
                                                                     <button class="btn btn-danger"><i
                                                                             class="fa fa-pencil">Delete</i></button>

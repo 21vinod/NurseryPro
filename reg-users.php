@@ -18,7 +18,7 @@ $query = $dbh->prepare($sql);
 $query -> bindParam(':id',$id, PDO::PARAM_STR);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query -> execute();
-header('location:reg-students.php');
+header('location:reg-users.php');
 }
 
 
@@ -33,7 +33,7 @@ $query = $dbh->prepare($sql);
 $query -> bindParam(':id',$id, PDO::PARAM_STR);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query -> execute();
-header('location:reg-students.php');
+header('location:reg-users.php');
 }
 
 
@@ -122,10 +122,10 @@ foreach($results as $result)
                                             <td class="center">
 <?php if($result->Status==1)
  {?>
-<a href="reg-students.php?inid=<?php echo htmlentities($result->id);?>" onclick="return confirm('Are you sure you want to block this student?');" >  <button class="btn btn-danger"> Inactive</button>
+<a href="reg-users.php?inid=<?php echo htmlentities($result->id);?>" onclick="return confirm('Are you sure you want to block this student?');" >  <button class="btn btn-danger"> Inactive</button>
 <?php } else {?>
 
-<a href="reg-students.php?id=<?php echo htmlentities($result->id);?>" onclick="return confirm('Are you sure you want to active this student?');"><button class="btn btn-primary"> Active</button> 
+<a href="reg-users.php?id=<?php echo htmlentities($result->id);?>" onclick="return confirm('Are you sure you want to active this student?');"><button class="btn btn-primary"> Active</button> 
                                             <?php } ?>
 
 <a href="student-history.php?stdid=<?php echo htmlentities($result->StudentId);?>"><button class="btn btn-success"> Details</button> 

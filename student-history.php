@@ -18,7 +18,7 @@ $query = $dbh->prepare($sql);
 $query -> bindParam(':id',$id, PDO::PARAM_STR);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query -> execute();
-header('location:reg-students.php');
+header('location:reg-users.php');
 }
 
 
@@ -33,7 +33,7 @@ $query = $dbh->prepare($sql);
 $query -> bindParam(':id',$id, PDO::PARAM_STR);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query -> execute();
-header('location:reg-students.php');
+header('location:reg-users.php');
 }
 
 
