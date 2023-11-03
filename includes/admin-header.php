@@ -25,7 +25,7 @@
             <div class="col-md-12">
                 <div class="navbar-collapse collapse ">
                     <ul id="menu-top" class="nav navbar-nav navbar-right">
-                        <li><a href="dashboard.php" class="menu-top-active">DASHBOARD</a></li>
+                        <li><a href="admin-dashboard.php" class="menu-top-active">DASHBOARD</a></li>
 
                         <li>
                             <a href="#" class="dropdown-toggle" id="ddlmenuItem" data-toggle="dropdown"> Tasks <i
@@ -50,13 +50,13 @@
                         </li>
 
                         <li>
-                            <a href="#" class="dropdown-toggle" id="ddlmenuItem" data-toggle="dropdown"> Issue Books <i
+                            <a href="#" class="dropdown-toggle" id="ddlmenuItem" data-toggle="dropdown"> Business <i
                                     class="fa fa-angle-down"></i></a>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="ddlmenuItem">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="issue-book.php">Issue New
-                                        Book</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                        href="manage-issued-books.php">Manage Issued Books</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="inventory_req.php">Inventory Request</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="manage-inventory_req.php">Manage Inventory Request</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="inventory_req.php">Sales</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="inventory_req.php">Purchases</a></li>
                             </ul>
                         </li>
                         <li><a href="reg-users.php">Reg User</a></li>
