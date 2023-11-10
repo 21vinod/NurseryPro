@@ -59,7 +59,7 @@
                                 <li role="presentation"><a role="menuitem" tabindex="-1"
                                         href="index.php?action=manage-inventory_req">Manage Inventory Request</a></li>
                                 <li role="presentation"><a role="menuitem" tabindex="-1"
-                                        href="index.php?action=inventory_req">Sales</a>
+                                        href="index.php?action=manage-sales">Sales</a>
                                 </li>
                                 <li role="presentation"><a role="menuitem" tabindex="-1"
                                         href="index.php?action=inventory_req">Purchases</a></li>

@@ -45,6 +45,9 @@ switch ($action) {
     case 'manage-inventory_req':
         include('view/manage-inventory_req.php');
         break;
+    case 'manage-sales':
+        include('view/manage-sales.php');
+        break;
     case 'manage-requests':
         include('view/manage-requests.php');
         break;

@@ -24,7 +24,7 @@ if (strlen($_SESSION['login']) == 0) {
             $_SESSION['error'] = "Something went wrong. Please try again";
         }
         header('location:index.php?action=manage-requests');
-
+        return;
     }
 
     ?>
@@ -49,6 +49,7 @@ if (strlen($_SESSION['login']) == 0) {
                         <h4 class="header-line">Add Request</h4>
                     </div>
                 </div>
+                <?php include('includes/flash.php'); ?>
                 <div class="row">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <div class="panel panel-info">

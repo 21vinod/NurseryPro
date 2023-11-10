@@ -22,7 +22,7 @@ if (strlen($_SESSION['alogin']) == 0) {
             $_SESSION['error'] = "Something went wrong. Please try again";
         }
         header('location:index.php?action=manage-inventory_req');
-
+        return;
     }
 
     ?>
@@ -47,6 +47,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                         <h4 class="header-line">Add Inventory Request</h4>
                     </div>
                 </div>
+                <?php include('includes/flash.php'); ?>
                 <div class="row">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <div class="panel panel-info">
@@ -68,8 +69,8 @@ if (strlen($_SESSION['alogin']) == 0) {
                                     </div>
                                     <div class="form-group">
                                         <label>Description</label>
-                                        <textarea class="form-control" type="text" name="description" autocomplete="off"
-                                            ></textarea>
+                                        <textarea class="form-control" type="text" name="description"
+                                            autocomplete="off"></textarea>
                                     </div>
 
                                     <button type="submit" name="create" class="btn btn-info">Create Request </button>

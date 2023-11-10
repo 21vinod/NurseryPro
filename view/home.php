@@ -18,7 +18,7 @@ if (isset($_POST['login'])) {
             $_SESSION['stdid'] = $result->StudentId;
             if ($result->Status == 1) {
                 $_SESSION['login'] = $_POST['emailid'];
-                echo "<script type='text/javascript'> document.location ='user-dashboard.php'; </script>";
+                echo "<script type='text/javascript'> document.location ='index.php?action=user-dashboard'; </script>";
             } else {
                 echo "<script>alert('Your Account Has been blocked .Please contact admin');</script>";
 
@@ -36,12 +36,12 @@ if (isset($_POST['login'])) {
 
 <head>
 <title>NurseryPro</title>
-<?php include('view/includes/header.php'); ?>
+<?php include('includes/header.php'); ?>
 </head>
 
 <body>
     <!------MENU SECTION START-->
-    <?php include('view/includes/user-menu.php'); ?>
+    <?php include('includes/user-menu.php'); ?>
     <!-- MENU SECTION END-->
     <div class="content-wrapper">
         <div class="container">

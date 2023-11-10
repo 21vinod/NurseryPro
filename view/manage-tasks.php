@@ -10,7 +10,7 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
         $query->execute();
         $_SESSION['delmsg'] = "Category deleted scuccessfully ";
         header('location:index.php?action=manage-categories');
-
+        return;
     }
     ?>
 
@@ -40,6 +40,7 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
                     <div class="col-md-12">
                         <h4 class="header-line">Manage Tasks</h4>
                     </div>
+                    <?php include('includes/flash.php'); ?>
                     <div class="row">
                         <?php if ($_SESSION['error'] != "") { ?>
                             <div class="col-md-6">

@@ -10,7 +10,7 @@ if (strlen($_SESSION['login']) == 0 && strlen($_SESSION['alogin']) == 0) {
         $query->execute();
         $_SESSION['delmsg'] = "Request deleted scuccessfully ";
         header('location:index.php?action=manage-inventory_req');
-
+return;
     }
     ?>
 
@@ -40,6 +40,7 @@ if (strlen($_SESSION['login']) == 0 && strlen($_SESSION['alogin']) == 0) {
                     <div class="col-md-12">
                         <h4 class="header-line">Manage Inventory Requests</h4>
                     </div>
+                    <?php include('includes/flash.php'); ?>
                     <div class="row">
                         <?php if ($_SESSION['error'] != "") { ?>
                             <div class="col-md-6">

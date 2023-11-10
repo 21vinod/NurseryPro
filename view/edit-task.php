@@ -18,7 +18,7 @@ $query->bindParam(':catid',$catid,PDO::PARAM_STR);
 $query->execute();
 $_SESSION['updatemsg']="Brand updated successfully";
 header('location:index.php?action=manage-categories');
-
+return;
 
 }
 ?>
@@ -43,6 +43,7 @@ header('location:index.php?action=manage-categories');
                             </div>
 
 </div>
+<?php include('includes/flash.php'); ?>
 <div class="row">
 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3"">
 <div class="panel panel-info">

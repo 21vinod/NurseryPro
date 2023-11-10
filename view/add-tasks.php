@@ -39,7 +39,7 @@ if (strlen($_SESSION['alogin']) == 0) {
             $_SESSION['error'] = "Something went wrong. Please try again";
         }
         header('location:index.php?action=manage-tasks');
-
+        return;
     }
     ?>
     <!DOCTYPE html>
@@ -52,9 +52,9 @@ if (strlen($_SESSION['alogin']) == 0) {
 
     <body>
         <!------MENU SECTION START-->
-        <?php include 'includes/admin-menu.php';?>
+        <?php include 'includes/admin-menu.php'; ?>
         <!-- MENU SECTION END-->
-   
+
         <!-- Tasks creation -->
         <div class="content-wrapper">
             <div class="container">
@@ -63,6 +63,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                         <h4 class="header-line">Add Task</h4>
                     </div>
                 </div>
+                <?php include('includes/flash.php'); ?>
                 <div class="row">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <div class=" panel panel-info">
@@ -113,4 +114,4 @@ if (strlen($_SESSION['alogin']) == 0) {
     </body>
 
     </html>
-<?php }?>
+<?php } ?>
