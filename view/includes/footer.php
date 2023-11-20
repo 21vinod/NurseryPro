@@ -10,11 +10,10 @@
     </div>
 </section>
 <!-- FOOTER SECTION END-->
-<script src="public/js/jquery-1.10.2.js"></script>
+<script src="public/js/jquery-3.7.1.js"></script>
 <!-- BOOTSTRAP SCRIPTS  -->
 <script src="public/js/bootstrap.js"></script>
-<!-- DATATABLE SCRIPTS  -->
-<script src="public/js/dataTables/jquery.dataTables.js"></script>
+
+<!-- <script src="public/js/dataTables/jquery.dataTables.js"></script>
 <script src="public/js/dataTables/dataTables.bootstrap.js"></script>
-<!-- CUSTOM SCRIPTS  -->
-<script src="public/js/custom.js"></script>
+<script src="public/js/custom.js"></script> -->

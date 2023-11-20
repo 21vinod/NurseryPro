@@ -5,7 +5,7 @@ if (strlen($_SESSION['login']) == 0) {
     if (isset($_GET['assign'])) {
         $id = $_GET['assign'];
         $sql = "UPDATE tasks SET assigned_worker=:workerid, status='Assigned' Where id=:taskid";
-        $query = $dbh->prepare($sql);
+        $query = $pdo->prepare($sql);
         $query->bindParam(':workerid', $_SESSION['stdid'], PDO::PARAM_STR);
         $query->bindParam(':taskid', $id, PDO::PARAM_STR);
         $query->execute();
@@ -65,10 +65,10 @@ if (strlen($_SESSION['login']) == 0) {
                                             <tbody>
                                                 <?php
                                                 $sid = $_SESSION['stdid'];
-                                                //$sql="SELECT tblbooks.BookName,tblbooks.ISBNNumber,tblissuedbookdetails.IssuesDate,tblissuedbookdetails.ReturnDate,tblissuedbookdetails.id as rid,tblissuedbookdetails.fine from  tblissuedbookdetails join users on users.StudentId=tblissuedbookdetails.StudentId join tblbooks on tblbooks.id=tblissuedbookdetails.BookId where users.StudentId=:sid order by tblissuedbookdetails.id desc";
-                                                $sql = "SELECT * from  tasks where assigned_worker=:sid";
-                                                $query = $dbh->prepare($sql);
-                                                $query-> bindParam(':sid', $sid, PDO::PARAM_STR);
+                                                //$sql="SELECT tblbooks.BookName,tblbooks.ISBNNumber,tblissuedbookdetails.IssuesDate,tblissuedbookdetails.ReturnDate,tblissuedbookdetails.id as rid,tblissuedbookdetails.fine from  tblissuedbookdetails join users on users.user_id=tblissuedbookdetails.user_id join tblbooks on tblbooks.id=tblissuedbookdetails.BookId where users.user_id=:uid order by tblissuedbookdetails.id desc";
+                                                $sql = "SELECT * from  tasks where assigned_worker=:uid";
+                                                $query = $pdo->prepare($sql);
+                                                $query-> bindParam(':uid', $sid, PDO::PARAM_STR);
                                                 $query->execute();
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
                                                 $cnt = 1;
@@ -157,10 +157,10 @@ if (strlen($_SESSION['login']) == 0) {
                                             <tbody>
                                                 <?php
                                                 $sid = $_SESSION['stdid'];
-                                                //$sql="SELECT tblbooks.BookName,tblbooks.ISBNNumber,tblissuedbookdetails.IssuesDate,tblissuedbookdetails.ReturnDate,tblissuedbookdetails.id as rid,tblissuedbookdetails.fine from  tblissuedbookdetails join users on users.StudentId=tblissuedbookdetails.StudentId join tblbooks on tblbooks.id=tblissuedbookdetails.BookId where users.StudentId=:sid order by tblissuedbookdetails.id desc";
+                                                //$sql="SELECT tblbooks.BookName,tblbooks.ISBNNumber,tblissuedbookdetails.IssuesDate,tblissuedbookdetails.ReturnDate,tblissuedbookdetails.id as rid,tblissuedbookdetails.fine from  tblissuedbookdetails join users on users.user_id=tblissuedbookdetails.user_id join tblbooks on tblbooks.id=tblissuedbookdetails.BookId where users.user_id=:uid order by tblissuedbookdetails.id desc";
                                                 $sql = "SELECT * from  tasks";
-                                                $query = $dbh->prepare($sql);
-                                                //$query-> bindParam(':sid', $sid, PDO::PARAM_STR);
+                                                $query = $pdo->prepare($sql);
+                                                //$query-> bindParam(':uid', $sid, PDO::PARAM_STR);
                                                 $query->execute();
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
                                                 $cnt = 1;

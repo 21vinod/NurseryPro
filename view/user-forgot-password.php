@@ -4,14 +4,14 @@ if (isset($_POST['change'])) {
     $mobile = $_POST['mobile'];
     $newpassword = md5($_POST['newpassword']);
     $sql = "SELECT EmailId FROM users WHERE EmailId=:email and MobileNumber=:mobile";
-    $query = $dbh->prepare($sql);
+    $query = $pdo->prepare($sql);
     $query->bindParam(':email', $email, PDO::PARAM_STR);
     $query->bindParam(':mobile', $mobile, PDO::PARAM_STR);
     $query->execute();
     $results = $query->fetchAll(PDO::FETCH_OBJ);
     if ($query->rowCount() > 0) {
         $con = "update users set Password=:newpassword where EmailId=:email and MobileNumber=:mobile";
-        $chngpwd1 = $dbh->prepare($con);
+        $chngpwd1 = $pdo->prepare($con);
         $chngpwd1->bindParam(':email', $email, PDO::PARAM_STR);
         $chngpwd1->bindParam(':mobile', $mobile, PDO::PARAM_STR);
         $chngpwd1->bindParam(':newpassword', $newpassword, PDO::PARAM_STR);

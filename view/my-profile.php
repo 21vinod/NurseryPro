@@ -10,9 +10,9 @@ $sid=$_SESSION['stdid'];
 $fname=$_POST['fullanme'];
 $mobileno=$_POST['mobileno'];
 
-$sql="update users set FullName=:fname,MobileNumber=:mobileno where StudentId=:sid";
-$query = $dbh->prepare($sql);
-$query->bindParam(':sid',$sid,PDO::PARAM_STR);
+$sql="update users set FullName=:fname,MobileNumber=:mobileno where user_id=:uid";
+$query = $pdo->prepare($sql);
+$query->bindParam(':uid',$sid,PDO::PARAM_STR);
 $query->bindParam(':fname',$fname,PDO::PARAM_STR);
 $query->bindParam(':mobileno',$mobileno,PDO::PARAM_STR);
 $query->execute();
@@ -26,7 +26,7 @@ echo '<script>alert("Your profile has been updated")</script>';
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <?php include('view/includes/header.php'); ?>
-    <title>NurseryPro | Student Signup</title>
+    <title>NurseryPro | User Signup</title>
 </head>
 <body>
     <!------MENU SECTION START-->
@@ -52,9 +52,9 @@ echo '<script>alert("Your profile has been updated")</script>';
                             <form name="signup" method="post">
 <?php 
 $sid=$_SESSION['stdid'];
-$sql="SELECT StudentId,FullName,EmailId,MobileNumber,RegDate,UpdationDate,Status from  users  where StudentId=:sid ";
-$query = $dbh -> prepare($sql);
-$query-> bindParam(':sid', $sid, PDO::PARAM_STR);
+$sql="SELECT user_id,FullName,EmailId,MobileNumber,RegDate,UpdationDate,Status from  users  where user_id=:uid ";
+$query = $pdo -> prepare($sql);
+$query-> bindParam(':uid', $sid, PDO::PARAM_STR);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
 $cnt=1;
@@ -64,8 +64,8 @@ foreach($results as $result)
 {               ?>  
 
 <div class="form-group">
-<label>Student ID : </label>
-<?php echo htmlentities($result->StudentId);?>
+<label>User ID : </label>
+<?php echo htmlentities($result->user_id);?>
 </div>
 
 <div class="form-group">

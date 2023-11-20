@@ -62,7 +62,7 @@
                                         href="index.php?action=manage-sales">Sales</a>
                                 </li>
                                 <li role="presentation"><a role="menuitem" tabindex="-1"
-                                        href="index.php?action=inventory_req">Purchases</a></li>
+                                        href="index.php?action=manage-purchases">Purchases</a></li>
                             </ul>
                         </li>
                         <li><a href="index.php?action=reg-users">Reg User</a></li>

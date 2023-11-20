@@ -10,7 +10,7 @@ $password=md5($_POST['password']);
 $newpassword=md5($_POST['newpassword']);
 $email=$_SESSION['login'];
   $sql ="SELECT Password FROM users WHERE EmailId=:email and Password=:password";
-$query= $dbh -> prepare($sql);
+$query= $pdo -> prepare($sql);
 $query-> bindParam(':email', $email, PDO::PARAM_STR);
 $query-> bindParam(':password', $password, PDO::PARAM_STR);
 $query-> execute();
@@ -18,7 +18,7 @@ $results = $query -> fetchAll(PDO::FETCH_OBJ);
 if($query -> rowCount() > 0)
 {
 $con="update users set Password=:newpassword where EmailId=:email";
-$chngpwd1 = $dbh->prepare($con);
+$chngpwd1 = $pdo->prepare($con);
 $chngpwd1-> bindParam(':email', $email, PDO::PARAM_STR);
 $chngpwd1-> bindParam(':newpassword', $newpassword, PDO::PARAM_STR);
 $chngpwd1->execute();

@@ -9,7 +9,7 @@ if(!empty($_POST["emailid"])) {
 	}
 	else {
 		$sql ="SELECT EmailId FROM users WHERE EmailId=:email";
-$query= $dbh -> prepare($sql);
+$query= $pdo -> prepare($sql);
 $query-> bindParam(':email', $email, PDO::PARAM_STR);
 $query-> execute();
 $results = $query -> fetchAll(PDO::FETCH_OBJ);

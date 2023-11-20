@@ -10,14 +10,14 @@ if (strlen($_SESSION['login']) == 0) {
         $status = $_POST['status'];
         $approval_details = $_POST['approval_details'];
         $sql = "INSERT INTO  assistance (task_id,req_details,req_by,status,approval_details) VALUES(:task_id,:req_details,:req_by,:status,:approval_details)";
-        $query = $dbh->prepare($sql);
+        $query = $pdo->prepare($sql);
         $query->bindParam(':task_id', $task_id, PDO::PARAM_STR);
         $query->bindParam(':req_details', $req_details, PDO::PARAM_STR);
         $query->bindParam(':req_by', $req_by, PDO::PARAM_STR);
         $query->bindParam(':status', $status, PDO::PARAM_STR);
         $query->bindParam(':approval_details', $approval_details, PDO::PARAM_STR);
         $query->execute();
-        $lastInsertId = $dbh->lastInsertId();
+        $lastInsertId = $pdo->lastInsertId();
         if ($lastInsertId) {
             $_SESSION['msg'] = "Request Listed successfully";
         } else {

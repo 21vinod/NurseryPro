@@ -1,19 +1,19 @@
 <?php
 require_once("model/pdo.php");
-if (!empty($_POST["studentid"])) {
-  $studentid = strtoupper($_POST["studentid"]);
+if (!empty($_POST["user_id"])) {
+  $user_id = strtoupper($_POST["user_id"]);
 
-  $sql = "SELECT FullName,Status,EmailId,MobileNumber FROM users WHERE StudentId=:studentid";
-  $query = $dbh->prepare($sql);
-  $query->bindParam(':studentid', $studentid, PDO::PARAM_STR);
+  $sql = "SELECT FullName,Status,EmailId,MobileNumber FROM users WHERE user_id=:user_id";
+  $query = $pdo->prepare($sql);
+  $query->bindParam(':user_id', $user_id, PDO::PARAM_STR);
   $query->execute();
   $results = $query->fetchAll(PDO::FETCH_OBJ);
   $cnt = 1;
   if ($query->rowCount() > 0) {
     foreach ($results as $result) {
       if ($result->Status == 0) {
-        echo "<span style='color:red'> Student ID Blocked </span>" . "<br />";
-        echo "<b>Student Name-</b>" . $result->FullName;
+        echo "<span style='color:red'> User ID Blocked </span>" . "<br />";
+        echo "<b>User Name-</b>" . $result->FullName;
         echo "<script>$('#submit').prop('disabled',true);</script>";
       } else {
         ?>
@@ -28,7 +28,7 @@ if (!empty($_POST["studentid"])) {
     }
   } else {
 
-    echo "<span style='color:red'> Invaid Student Id. Please Enter Valid Student id .</span>";
+    echo "<span style='color:red'> Invaid User Id. Please Enter Valid User id .</span>";
     echo "<script>$('#submit').prop('disabled',true);</script>";
   }
 }

@@ -32,7 +32,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                 <i class="fa fa-book fa-5x"></i>
                 <?php
                 $sql = "SELECT id from tasks ";
-                $query = $dbh->prepare($sql);
+                $query = $pdo->prepare($sql);
                 $query->execute();
                 $results = $query->fetchAll(PDO::FETCH_OBJ);
                 $listdbooks = $query->rowCount();
@@ -53,7 +53,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                 <i class="fa fa-recycle fa-5x"></i>
                 <!-- <?php
                 // $sql2 = "SELECT id from tasks where (RetrunStatus='' || RetrunStatus is null)";
-                // $query2 = $dbh->prepare($sql2);
+                // $query2 = $pdo->prepare($sql2);
                 // $query2->execute();
                 // $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
                 // $returnedbooks = $query2->rowCount();echo htmlentities($returnedbooks);
@@ -73,7 +73,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                 <i class="fa fa-users fa-5x"></i>
                 <?php
                 $sql3 = "SELECT id from users ";
-                $query3 = $dbh->prepare($sql3);
+                $query3 = $pdo->prepare($sql3);
                 $query3->execute();
                 $results3 = $query3->fetchAll(PDO::FETCH_OBJ);
                 $regstds = $query3->rowCount();
@@ -92,7 +92,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                 <i class="fa fa-user fa-5x"></i>
                 <?php
                 $sq4 = "SELECT id from assistance ";
-                $query4 = $dbh->prepare($sq4);
+                $query4 = $pdo->prepare($sq4);
                 $query4->execute();
                 $results4 = $query4->fetchAll(PDO::FETCH_OBJ);
                 $listdathrs = $query4->rowCount();
@@ -118,7 +118,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                 <i class="fa fa-file-archive-o fa-5x"></i>
                 <?php
                 $sql5 = "SELECT id from inventory_req ";
-                $query5 = $dbh->prepare($sql5);
+                $query5 = $pdo->prepare($sql5);
                 $query5->execute();
                 $results5 = $query5->fetchAll(PDO::FETCH_OBJ);
                 $listdcats = $query5->rowCount();

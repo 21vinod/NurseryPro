@@ -5,7 +5,7 @@ if (strlen($_SESSION['login']) == 0 && strlen($_SESSION['alogin']) == 0) {
     if (isset($_GET['del'])) {
         $id = $_GET['del'];
         $sql = "delete from assistance  WHERE id=:id";
-        $query = $dbh->prepare($sql);
+        $query = $pdo->prepare($sql);
         $query->bindParam(':id', $id, PDO::PARAM_STR);
         $query->execute();
         $_SESSION['delmsg'] = "Request deleted scuccessfully ";
@@ -66,7 +66,7 @@ if (strlen($_SESSION['login']) == 0 && strlen($_SESSION['alogin']) == 0) {
                                             </thead>
                                             <tbody>
                                                 <?php $sql = "SELECT * from  assistance";
-                                                $query = $dbh->prepare($sql);
+                                                $query = $pdo->prepare($sql);
                                                 $query->execute();
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
                                                 $cnt = 1;

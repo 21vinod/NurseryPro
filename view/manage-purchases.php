@@ -4,29 +4,30 @@ if (strlen($_SESSION['alogin']) == 0) {
 } else {
 
     if (isset($_POST['create'])) {
-        $customer_name = $_POST['customer_name'];
+        $vendor_name = $_POST['vendor_name'];
         $mobile_num = $_POST['mobile_num'];
-        $item = $_POST['item'];
+        $item_name = $_POST['item_name'];
         $quantity = $_POST['quantity'];
         $item_price = $_POST['item_price'];
-        // sales: id	customer_name	mobile_num	item	quantity	item_price
+        // purchases: id	item_name	quantity	item_price	vendor_name	mobile_num	
 
-        $sql = "INSERT INTO  sales (customer_name,mobile_num,item,quantity,item_price) VALUES(:customer_name,:mobile_num,:item,:quantity,:item_price)";
+
+        $sql = "INSERT INTO  purchases (vendor_name,mobile_num,item_name,quantity,item_price) VALUES(:vendor_name,:mobile_num,:item_name,:quantity,:item_price)";
         $query = $pdo->prepare($sql);
-        $query->bindParam(':customer_name', $customer_name, PDO::PARAM_STR);
+        $query->bindParam(':vendor_name', $vendor_name, PDO::PARAM_STR);
         $query->bindParam(':mobile_num', $mobile_num, PDO::PARAM_STR);
-        $query->bindParam(':item', $item, PDO::PARAM_STR);
+        $query->bindParam(':item_name', $item_name, PDO::PARAM_STR);
         $query->bindParam(':quantity', $quantity, PDO::PARAM_STR);
         $query->bindParam(':item_price', $item_price, PDO::PARAM_STR);
         $query->execute();
 
         $lastInsertId = $pdo->lastInsertId();
         if ($lastInsertId) {
-            $_SESSION['msg'] = "Sale Order Listed successfully";
+            $_SESSION['msg'] = "Purchase Order Listed successfully";
         } else {
             $_SESSION['error'] = "Something went wrong. Please try again";
         }
-        header('location:index.php?action=manage-sales');
+        header('location:index.php?action=manage-purchases');
         return;
     }
 
@@ -35,7 +36,7 @@ if (strlen($_SESSION['alogin']) == 0) {
     <html xmlns="http://www.w3.org/1999/xhtml">
 
     <head>
-        <title>NurseryPro | Sales</title>
+        <title>NurseryPro | Purchases</title>
         <?php include('view/includes/header.php'); ?>
         <script>
             // Function to calculate and display multiplication
@@ -44,14 +45,17 @@ if (strlen($_SESSION['alogin']) == 0) {
                 var num1 = document.getElementById("quantity").value;
                 var num2 = document.getElementById("price").value;
 
+                nim1 = $('#quantity').val() + 0;
+                num2 = $('#price').val() + 0;
                 // Perform multiplication
                 var result = num1 * num2;
 
                 // Display the result
-                document.getElementById("total").innerHTML = result;
+                $('#total').empty().text(result);
             }
+
         </script>
-        
+
     </head>
 
     <body>
@@ -64,7 +68,7 @@ if (strlen($_SESSION['alogin']) == 0) {
             <div class="container">
                 <div class="row pad-botm">
                     <div class="col-md-12">
-                        <h4 class="header-line">New Sale Order</h4>
+                        <h4 class="header-line">New Purchase Order</h4>
                     </div>
                 </div>
                 <?php include('includes/flash.php'); ?>
@@ -72,14 +76,13 @@ if (strlen($_SESSION['alogin']) == 0) {
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                Sale Info
+                                Purchase Info
                             </div>
                             <div class="panel-body">
                                 <form role="form" method="post">
                                     <div class="form-group">
-                                        <!-- // sales: id	customer_name	mobile_num	item	quantity	item_price -->
-                                        <label>Customer Name</label>
-                                        <input class="form-control" type="text" name="customer_name" autocomplete="on"
+                                        <label>Vendor Name</label>
+                                        <input class="form-control" type="text" name="vendor_name" autocomplete="on"
                                             required />
                                     </div>
                                     <div class="form-group">
@@ -89,7 +92,8 @@ if (strlen($_SESSION['alogin']) == 0) {
                                     </div>
                                     <div class="form-group">
                                         <label>Item name</label>
-                                        <input class="form-control" type="text" name="item" autocomplete="on" required />
+                                        <input class="form-control" type="text" name="item_name" autocomplete="on"
+                                            required />
                                     </div>
                                     <div class="form-group">
                                         <label>Quantity</label>
@@ -108,7 +112,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                                             readonly /> -->
                                     </div>
 
-                                    <button type="submit" name="create" class="btn btn-info">Create Sale order </button>
+                                    <button type="submit" name="create" class="btn btn-info">Create Purchase order </button>
                                 </form>
                             </div>
                         </div>

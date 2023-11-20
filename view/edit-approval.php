@@ -14,7 +14,7 @@ $isbn=$_POST['isbn'];
 $price=$_POST['price'];
 $bookid=intval($_GET['bookid']);
 $sql="update  tblbooks set BookName=:bookname,CatId=:category,AuthorId=:author,BookPrice=:price where id=:bookid";
-$query = $dbh->prepare($sql);
+$query = $pdo->prepare($sql);
 $query->bindParam(':bookname',$bookname,PDO::PARAM_STR);
 $query->bindParam(':category',$category,PDO::PARAM_STR);
 $query->bindParam(':author',$author,PDO::PARAM_STR);
@@ -57,7 +57,7 @@ Book Info
 <?php 
 $bookid=intval($_GET['bookid']);
 $sql = "SELECT tblbooks.BookName,tblcategory.CategoryName,tblcategory.id as cid,tblauthors.AuthorName,tblauthors.id as athrid,tblbooks.ISBNNumber,tblbooks.BookPrice,tblbooks.id as bookid,tblbooks.bookImage from  tblbooks join tblcategory on tblcategory.id=tblbooks.CatId join tblauthors on tblauthors.id=tblbooks.AuthorId where tblbooks.id=:bookid";
-$query = $dbh -> prepare($sql);
+$query = $pdo -> prepare($sql);
 $query->bindParam(':bookid',$bookid,PDO::PARAM_STR);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -88,7 +88,7 @@ foreach($results as $result)
 <?php 
 $status=1;
 $sql1 = "SELECT * from  tblcategory where Status=:status";
-$query1 = $dbh -> prepare($sql1);
+$query1 = $pdo -> prepare($sql1);
 $query1-> bindParam(':status',$status, PDO::PARAM_STR);
 $query1->execute();
 $resultss=$query1->fetchAll(PDO::FETCH_OBJ);
@@ -116,7 +116,7 @@ else
 <?php 
 
 $sql2 = "SELECT * from  tblauthors ";
-$query2 = $dbh -> prepare($sql2);
+$query2 = $pdo -> prepare($sql2);
 $query2->execute();
 $result2=$query2->fetchAll(PDO::FETCH_OBJ);
 if($query2->rowCount() > 0)

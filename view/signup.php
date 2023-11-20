@@ -1,33 +1,42 @@
 <?php
+include_once("pdo.php");
+
 if (isset($_POST['signup'])) {
 
-    //Code for student ID
-    $count_my_page = ("studentid.txt");
+    //Code for User ID
+    $count_my_page = ("user_id.txt");
     $hits = file($count_my_page);
     $hits[0]++;
     $fp = fopen($count_my_page, "w");
     fputs($fp, "$hits[0]");
     fclose($fp);
-    $StudentId = $hits[0];
-    $fname = $_POST['fullanme'];
-    $mobileno = $_POST['mobileno'];
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $mobile = $_POST['mobile'];
+    $user_type = $_POST['user_type'];
     $email = $_POST['email'];
-    $password = md5($_POST['password']);
-    $status = 1;
-    $sql = "INSERT INTO  users(StudentId,FullName,MobileNumber,EmailId,Password,Status) VALUES(:StudentId,:fname,:mobileno,:email,:password,:status)";
-    $query = $dbh->prepare($sql);
-    $query->bindParam(':StudentId', $StudentId, PDO::PARAM_STR);
-    $query->bindParam(':fname', $fname, PDO::PARAM_STR);
-    $query->bindParam(':mobileno', $mobileno, PDO::PARAM_STR);
+    $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
+    $status = 1; //let admin check the user type and approve/reject
+
+
+  //  $sql = "INSERT INTO `users`(`first_name`, `last_name`, `email`, `password`, `mobile`, `user_type`, `status`) VALUES ('worker1','willow','worker1@gmail.com',:password,'+1 9876543210','admin','1')";
+
+    $sql = "INSERT INTO  users(first_name,last_name,email,password,mobile,user_type,status) 
+    VALUES(:first_name,:last_name,:email,:password,:mobile,:user_type,:status)";
+    $query = $pdo->prepare($sql);
+    $query->bindParam(':first_name', $first_name, PDO::PARAM_STR);
+    $query->bindParam(':last_name', $last_name, PDO::PARAM_STR);
+    $query->bindParam(':mobile', $mobile, PDO::PARAM_STR);
+    $query->bindParam(':user_type', $user_type, PDO::PARAM_STR);
     $query->bindParam(':email', $email, PDO::PARAM_STR);
     $query->bindParam(':password', $password, PDO::PARAM_STR);
     $query->bindParam(':status', $status, PDO::PARAM_STR);
     $query->execute();
-    $lastInsertId = $dbh->lastInsertId();
+    $lastInsertId = $pdo->lastInsertId();
     if ($lastInsertId) {
-        echo '<script>alert("Your Registration successfull and your USER id is  "+"' . $StudentId . '")</script>';
+        echo '<script>alert("Your registration has been succesfull!!")</script>';
     } else {
-        echo "<script>alert('Something went wrong. Please try again');</script>";
+        echo "<script>alert('Something went wrong. Please try again!!');</script>";
     }
 }
 
@@ -90,15 +99,25 @@ if (isset($_POST['signup'])) {
                         <div class="panel-body">
                             <form name="signup" method="post" onSubmit="return valid();">
                                 <div class="form-group">
-                                    <label>Enter Full Name</label>
-                                    <input class="form-control" type="text" name="fullanme" autocomplete="off"
+                                    <label>Enter First Name</label>
+                                    <input class="form-control" type="text" name="first_name" autocomplete="off"
+                                        required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Enter Last Name</label>
+                                    <input class="form-control" type="text" name="last_name" autocomplete="off"
                                         required />
                                 </div>
 
+                                <div class="form-group">
+                                    <label>User Type:</label>
+                                    <input class="form-control" type="text" name="user_type" maxlength="10"
+                                        autocomplete="off" required />
+                                </div>
 
                                 <div class="form-group">
                                     <label>Mobile Number :</label>
-                                    <input class="form-control" type="text" name="mobileno" maxlength="10"
+                                    <input class="form-control" type="text" name="mobile" maxlength="10"
                                         autocomplete="off" required />
                                 </div>
 

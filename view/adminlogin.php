@@ -6,7 +6,7 @@ if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = md5($_POST['password']);
     $sql = "SELECT UserName,Password FROM admin WHERE UserName=:username and Password=:password";
-    $query = $dbh->prepare($sql);
+    $query = $pdo->prepare($sql);
     $query->bindParam(':username', $username, PDO::PARAM_STR);
     $query->bindParam(':password', $password, PDO::PARAM_STR);
     $query->execute();

@@ -5,7 +5,7 @@ if (strlen($_SESSION['login']) == 0 && strlen($_SESSION['alogin']) == 0) {
     if (isset($_GET['del'])) {
         $id = $_GET['del'];
         $sql = "DELETE from inventory_req WHERE id=:id";
-        $query = $dbh->prepare($sql);
+        $query = $pdo->prepare($sql);
         $query->bindParam(':id', $id, PDO::PARAM_STR);
         $query->execute();
         $_SESSION['delmsg'] = "Request deleted scuccessfully ";
@@ -101,7 +101,7 @@ return;
                                             </thead>
                                             <tbody>
                                                 <?php $sql = "SELECT * from  inventory_req";
-                                                $query = $dbh->prepare($sql);
+                                                $query = $pdo->prepare($sql);
                                                 $query->execute();
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
                                                 $cnt = 1;

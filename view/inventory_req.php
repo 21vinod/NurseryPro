@@ -10,12 +10,12 @@ if (strlen($_SESSION['alogin']) == 0) {
         // inventory_req: id	item_name	quantity	description
         $approval_details = $_POST['approval_details'];
         $sql = "INSERT INTO  inventory_req (item_name,	quantity, description) VALUES(:item_name,	:quantity, :description)";
-        $query = $dbh->prepare($sql);
+        $query = $pdo->prepare($sql);
         $query->bindParam(':item_name', $item_name, PDO::PARAM_STR);
         $query->bindParam(':quantity', $quantity, PDO::PARAM_STR);
         $query->bindParam(':description', $description, PDO::PARAM_STR);
         $query->execute();
-        $lastInsertId = $dbh->lastInsertId();
+        $lastInsertId = $pdo->lastInsertId();
         if ($lastInsertId) {
             $_SESSION['msg'] = "Request Listed successfully";
         } else {

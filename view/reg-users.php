@@ -5,13 +5,13 @@ header('location:index.php');
 }
 else{ 
 
-// code for block student    
+// code for block User    
 if(isset($_GET['inid']))
 {
 $id=$_GET['inid'];
 $status=0;
 $sql = "update users set Status=:status  WHERE id=:id";
-$query = $dbh->prepare($sql);
+$query = $pdo->prepare($sql);
 $query -> bindParam(':id',$id, PDO::PARAM_STR);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query -> execute();
@@ -20,13 +20,13 @@ header('location:index.php?action=reg-users');
 
 
 
-//code for active students
+//code for active Users
 if(isset($_GET['id']))
 {
 $id=$_GET['id'];
 $status=1;
 $sql = "update users set Status=:status  WHERE id=:id";
-$query = $dbh->prepare($sql);
+$query = $pdo->prepare($sql);
 $query -> bindParam(':id',$id, PDO::PARAM_STR);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query -> execute();
@@ -38,7 +38,7 @@ header('location:index.php?action=reg-users');
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>NurseryPro | Manage Reg Students</title>
+    <title>NurseryPro | Manage Reg Users</title>
     <?php include('view/includes/header.php'); ?>
 </head>
 <body>
@@ -49,7 +49,7 @@ header('location:index.php?action=reg-users');
          <div class="container">
         <div class="row pad-botm">
             <div class="col-md-12">
-                <h4 class="header-line">Manage Reg Students</h4>
+                <h4 class="header-line">Manage Reg Users</h4>
     </div>
 
 
@@ -59,7 +59,7 @@ header('location:index.php?action=reg-users');
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                          Reg Students
+                          Reg Users
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -67,8 +67,8 @@ header('location:index.php?action=reg-users');
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Student ID</th>
-                                            <th>Student Name</th>
+                                            <th>User ID</th>
+                                            <th>User Name</th>
                                             <th>Email id </th>
                                             <th>Mobile Number</th>
                                             <th>Reg Date</th>
@@ -78,7 +78,7 @@ header('location:index.php?action=reg-users');
                                     </thead>
                                     <tbody>
 <?php $sql = "SELECT * from users";
-$query = $dbh -> prepare($sql);
+$query = $pdo -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
 $cnt=1;
@@ -88,7 +88,7 @@ foreach($results as $result)
 {               ?>                                      
                                         <tr class="odd gradeX">
                                             <td class="center"><?php echo htmlentities($cnt);?></td>
-                                            <td class="center"><?php echo htmlentities($result->StudentId);?></td>
+                                            <td class="center"><?php echo htmlentities($result->user_id);?></td>
                                             <td class="center"><?php echo htmlentities($result->FullName);?></td>
                                             <td class="center"><?php echo htmlentities($result->EmailId);?></td>
                                             <td class="center"><?php echo htmlentities($result->MobileNumber);?></td>
@@ -105,13 +105,13 @@ foreach($results as $result)
                                             <td class="center">
 <?php if($result->Status==1)
  {?>
-<a href="reg-users.php?inid=<?php echo htmlentities($result->id);?>" onclick="return confirm('Are you sure you want to block this student?');" >  <button class="btn btn-danger"> Inactive</button>
+<a href="reg-users.php?inid=<?php echo htmlentities($result->id);?>" onclick="return confirm('Are you sure you want to block this User?');" >  <button class="btn btn-danger"> Inactive</button>
 <?php } else {?>
 
-<a href="reg-users.php?id=<?php echo htmlentities($result->id);?>" onclick="return confirm('Are you sure you want to active this student?');"><button class="btn btn-primary"> Active</button> 
+<a href="reg-users.php?id=<?php echo htmlentities($result->id);?>" onclick="return confirm('Are you sure you want to active this User?');"><button class="btn btn-primary"> Active</button> 
                                             <?php } ?>
 
-<a href="student-history.php?stdid=<?php echo htmlentities($result->StudentId);?>"><button class="btn btn-success"> Details</button> 
+<a href="User-history.php?stdid=<?php echo htmlentities($result->user_id);?>"><button class="btn btn-success"> Details</button> 
 
                                           
                                             </td>

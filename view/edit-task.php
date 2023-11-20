@@ -11,7 +11,7 @@ $category=$_POST['category'];
 $status=$_POST['status'];
 $catid=intval($_GET['catid']);
 $sql="update  tblcategory set CategoryName=:category,Status=:status where id=:catid";
-$query = $dbh->prepare($sql);
+$query = $pdo->prepare($sql);
 $query->bindParam(':category',$category,PDO::PARAM_STR);
 $query->bindParam(':status',$status,PDO::PARAM_STR);
 $query->bindParam(':catid',$catid,PDO::PARAM_STR);
@@ -56,7 +56,7 @@ Category Info
 <?php 
 $catid=intval($_GET['catid']);
 $sql="SELECT * from tblcategory where id=:catid";
-$query=$dbh->prepare($sql);
+$query=$pdo->prepare($sql);
 $query-> bindParam(':catid',$catid, PDO::PARAM_STR);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);

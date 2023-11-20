@@ -33,7 +33,7 @@ if (strlen($_SESSION['login']) == 0) {
                 <i class="fa fa-book fa-5x"></i>
                 <?php
                 $sql = "SELECT id from tasks";
-                $query = $dbh->prepare($sql);
+                $query = $pdo->prepare($sql);
                 $query->execute();
                 $results = $query->fetchAll(PDO::FETCH_OBJ);
                 $listdbooks = $query->rowCount();
@@ -53,9 +53,9 @@ if (strlen($_SESSION['login']) == 0) {
                 <?php
                 $rsts = 0;
                 $sid = $_SESSION['stdid'];
-                $sql2 = "SELECT id from tasks where assigned_worker=:sid";
-                $query2 = $dbh->prepare($sql2);
-                $query2->bindParam(':sid', $sid, PDO::PARAM_STR);
+                $sql2 = "SELECT id from tasks where assigned_worker=:uid";
+                $query2 = $pdo->prepare($sql2);
+                $query2->bindParam(':uid', $sid, PDO::PARAM_STR);
                 $query2->execute();
                 $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
                 $returnedbooks = $query2->rowCount();

@@ -7,11 +7,11 @@ if (strlen($_SESSION['alogin']) == 0) {
         $category = $_POST['category'];
         $status = $_POST['status'];
         $sql = "INSERT INTO  tblcategory(CategoryName,Status) VALUES(:category,:status)";
-        $query = $dbh->prepare($sql);
+        $query = $pdo->prepare($sql);
         $query->bindParam(':category', $category, PDO::PARAM_STR);
         $query->bindParam(':status', $status, PDO::PARAM_STR);
         $query->execute();
-        $lastInsertId = $dbh->lastInsertId();
+        $lastInsertId = $pdo->lastInsertId();
         if ($lastInsertId) {
             $_SESSION['msg'] = "Brand Listed successfully";
         } else {
@@ -26,13 +26,13 @@ if (strlen($_SESSION['alogin']) == 0) {
         $assigned = $_POST['worker'];
         $desc = $_POST['desc'];
         $sql = "INSERT INTO  tasks (name,description,assigned_worker,status) VALUES(:name,:description,:assigned_worker,:status)";
-        $query = $dbh->prepare($sql);
+        $query = $pdo->prepare($sql);
         $query->bindParam(':name', $name, PDO::PARAM_STR);
         $query->bindParam(':description', $desc, PDO::PARAM_STR);
         $query->bindParam(':assigned_worker', $assigned, PDO::PARAM_STR);
         $query->bindParam(':status', $status, PDO::PARAM_STR);
         $query->execute();
-        $lastInsertId = $dbh->lastInsertId();
+        $lastInsertId = $pdo->lastInsertId();
         if ($lastInsertId) {
             $_SESSION['msg'] = "Task Listed successfully";
         } else {
