@@ -68,9 +68,9 @@ return true;
 </script>
 
 <body>
-    <!------MENU SECTION START-->
+    
 <?php include('includes/user-menu.php');?>
-<!-- MENU SECTION END-->
+
 <div class="content-wrapper">
 <div class="container">
 <div class="row pad-botm">
@@ -80,7 +80,7 @@ return true;
 </div>
  <?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
         else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>            
-<!--LOGIN PANEL START-->           
+           
 <div class="row">
 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" >
 <div class="panel panel-info">
@@ -96,7 +96,7 @@ Change Password
 </div>
 
 <div class="form-group">
-<label>Enter Password</label>
+<label>Password</label>
 <input class="form-control" type="password" name="newpassword" autocomplete="off" required  />
 </div>
 
@@ -111,12 +111,12 @@ Change Password
 </div>
 </div>
 </div>  
-<!---LOGIN PABNEL END-->            
+            
              
  
     </div>
     </div>
-     <!-- CONTENT-WRAPPER SECTION END-->
+     
      <?php include 'includes/footer.php'; ?>
 </body>
 </html>

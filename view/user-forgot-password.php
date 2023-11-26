@@ -42,9 +42,9 @@ if (isset($_POST['change'])) {
 </head>
 
 <body>
-    <!------MENU SECTION START-->
+    
     <?php include('includes/user-menu.php'); ?>
-    <!-- MENU SECTION END-->
+    
     <div class="content-wrapper">
         <div class="container">
             <div class="row pad-botm">
@@ -53,23 +53,23 @@ if (isset($_POST['change'])) {
                 </div>
             </div>
 
-            <!--LOGIN PANEL START-->
+            
             <div class="row">
                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                     <div class="panel panel-info">
                         <div class="panel-heading">
-                            LOGIN FORM
+                            LOGIN
                         </div>
                         <div class="panel-body">
                             <form role="form" name="chngpwd" method="post" onSubmit="return valid();">
 
                                 <div class="form-group">
-                                    <label>Enter Reg Email id</label>
+                                    <label>Reg Email id</label>
                                     <input class="form-control" type="email" name="email" required autocomplete="off" />
                                 </div>
 
                                 <div class="form-group">
-                                    <label>Enter Reg Mobile No</label>
+                                    <label>Reg Mobile No</label>
                                     <input class="form-control" type="text" name="mobile" required autocomplete="off" />
                                 </div>
 
@@ -93,12 +93,12 @@ if (isset($_POST['change'])) {
                     </div>
                 </div>
             </div>
-            <!---LOGIN PABNEL END-->
+            
 
 
         </div>
     </div>
-    <!-- CONTENT-WRAPPER SECTION END-->
+    
     <?php include 'includes/footer.php'; ?>
 
 </body>

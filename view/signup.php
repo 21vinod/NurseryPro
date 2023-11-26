@@ -17,7 +17,7 @@ if (isset($_POST['signup'])) {
     $email = $_POST['email'];
     $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
     $status = 1; //let admin check the user type and approve/reject
-
+    // dont signup if email alrady exists or check with jquery
 
   //  $sql = "INSERT INTO `users`(`first_name`, `last_name`, `email`, `password`, `mobile`, `user_type`, `status`) VALUES ('worker1','willow','worker1@gmail.com',:password,'+1 9876543210','admin','1')";
 
@@ -77,9 +77,9 @@ if (isset($_POST['signup'])) {
 </head>
 
 <body>
-    <!------MENU SECTION START-->
+    
     <?php include('includes/user-menu.php'); ?>
-    <!-- MENU SECTION END-->
+    
     <div class="content-wrapper">
         <div class="container">
             <div class="row pad-botm">
@@ -94,17 +94,17 @@ if (isset($_POST['signup'])) {
                 <div class="col-md-9 col-md-offset-1">
                     <div class="panel panel-danger">
                         <div class="panel-heading">
-                            SINGUP FORM
+                            SINGUP
                         </div>
                         <div class="panel-body">
                             <form name="signup" method="post" onSubmit="return valid();">
                                 <div class="form-group">
-                                    <label>Enter First Name</label>
+                                    <label>First Name</label>
                                     <input class="form-control" type="text" name="first_name" autocomplete="off"
                                         required />
                                 </div>
                                 <div class="form-group">
-                                    <label>Enter Last Name</label>
+                                    <label>Last Name</label>
                                     <input class="form-control" type="text" name="last_name" autocomplete="off"
                                         required />
                                 </div>
@@ -122,14 +122,14 @@ if (isset($_POST['signup'])) {
                                 </div>
 
                                 <div class="form-group">
-                                    <label>Enter Email</label>
+                                    <label>Email</label>
                                     <input class="form-control" type="email" name="email" id="emailid"
                                         onBlur="checkAvailability()" autocomplete="off" required />
                                     <span id="user-availability-status" style="font-size:12px;"></span>
                                 </div>
 
                                 <div class="form-group">
-                                    <label>Enter Password</label>
+                                    <label>Password</label>
                                     <input class="form-control" type="password" name="password" autocomplete="off"
                                         required />
                                 </div>
@@ -150,7 +150,7 @@ if (isset($_POST['signup'])) {
             </div>
         </div>
     </div>
-    <!-- CONTENT-WRAPPER SECTION END-->
+    
     <?php include 'includes/footer.php'; ?>
 </body>
 

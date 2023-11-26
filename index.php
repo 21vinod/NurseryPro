@@ -1,22 +1,19 @@
 <?php
-
-require_once('model/pdo.php');
-error_reporting(0);
 session_start();
+error_reporting(0);
+require_once('model/pdo.php');
 
-
-$action = isset($_GET['action']) ? $_GET['action'] : 'login';
-
+$action = isset($_GET['action']) ? $_GET['action'] : 'home';
 // Perform the specified action
 switch ($action) {
-    case 'login':
+    case 'home':
         include('view/home.php');
+        break;
+    case 'login':
+        include('view/login.php');
         break;
     case 'signup':
         include('view/signup.php');
-        break;
-    case 'adminlogin':
-        include('view/adminlogin.php');
         break;
     case 'admin-dashboard':
         include('view/admin-dashboard.php');
@@ -38,6 +35,9 @@ switch ($action) {
         break;
     case 'edit-task':
         include('view/edit-task.php');
+        break;
+    case 'delete-task':
+        include("model/delete-task.php");
         break;
     case 'inventory_req':
         include('view/inventory_req.php');
@@ -70,10 +70,7 @@ switch ($action) {
         include('view/admin-change-password.php');
         break;
     case 'logout':
-        //destory session
-        session_destroy();
-        $login_message = 'You have been logged out.';
-        header('Location: index.php?action=login');
+        include('model/logout.php');
         break;
 }
 ?>

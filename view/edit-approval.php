@@ -7,22 +7,22 @@ else{
 
 if(isset($_POST['update']))
 {
-$bookname=$_POST['bookname'];
+$itemname=$_POST['itemname'];
 $category=$_POST['category'];
 $author=$_POST['author'];
 $isbn=$_POST['isbn'];
 $price=$_POST['price'];
-$bookid=intval($_GET['bookid']);
-$sql="update  tblbooks set BookName=:bookname,CatId=:category,AuthorId=:author,BookPrice=:price where id=:bookid";
+$itemid=intval($_GET['itemid']);
+$sql="update  tblitems set BookName=:itemname,CatId=:category,AuthorId=:author,BookPrice=:price where id=:itemid";
 $query = $pdo->prepare($sql);
-$query->bindParam(':bookname',$bookname,PDO::PARAM_STR);
+$query->bindParam(':itemname',$itemname,PDO::PARAM_STR);
 $query->bindParam(':category',$category,PDO::PARAM_STR);
 $query->bindParam(':author',$author,PDO::PARAM_STR);
 $query->bindParam(':price',$price,PDO::PARAM_STR);
-$query->bindParam(':bookid',$bookid,PDO::PARAM_STR);
+$query->bindParam(':itemid',$itemid,PDO::PARAM_STR);
 $query->execute();
 echo "<script>alert('Book info updated successfully');</script>";
-echo "<script>window.location.href='index.php?action=manage-books'</script>";
+echo "<script>window.location.href='index.php?action=manage-items'</script>";
 
 
 }
@@ -34,9 +34,9 @@ echo "<script>window.location.href='index.php?action=manage-books'</script>";
     <?php include('view/includes/header.php'); ?>
 </head>
 <body>
-      <!------MENU SECTION START-->
+      
 <?php include('includes/admin-menu.php');?>
-<!-- MENU SECTION END-->
+
     <div class="content-wrapper">
          <div class="container">
         <div class="row pad-botm">
@@ -55,10 +55,10 @@ Book Info
 <div class="panel-body">
 <form role="form" method="post">
 <?php 
-$bookid=intval($_GET['bookid']);
-$sql = "SELECT tblbooks.BookName,tblcategory.CategoryName,tblcategory.id as cid,tblauthors.AuthorName,tblauthors.id as athrid,tblbooks.ISBNNumber,tblbooks.BookPrice,tblbooks.id as bookid,tblbooks.bookImage from  tblbooks join tblcategory on tblcategory.id=tblbooks.CatId join tblauthors on tblauthors.id=tblbooks.AuthorId where tblbooks.id=:bookid";
+$itemid=intval($_GET['itemid']);
+$sql = "SELECT tblitems.BookName,tblcategory.CategoryName,tblcategory.id as cid,tblauthors.AuthorName,tblauthors.id as athrid,tblitems.ISBNNumber,tblitems.BookPrice,tblitems.id as itemid,tblitems.itemImage from  tblitems join tblcategory on tblcategory.id=tblitems.CatId join tblauthors on tblauthors.id=tblitems.AuthorId where tblitems.id=:itemid";
 $query = $pdo -> prepare($sql);
-$query->bindParam(':bookid',$bookid,PDO::PARAM_STR);
+$query->bindParam(':itemid',$itemid,PDO::PARAM_STR);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
 $cnt=1;
@@ -70,14 +70,14 @@ foreach($results as $result)
 <div class="col-md-6">
 <div class="form-group">
 <label>Book Image</label>
-<img src="img/<?php echo htmlentities($result->bookImage);?>" width="100">
-<a href="change-img.php?bookid=<?php echo htmlentities($result->bookid);?>">Change Book Image</a>
+<img src="img/<?php echo htmlentities($result->itemImage);?>" width="100">
+<a href="change-img.php?itemid=<?php echo htmlentities($result->itemid);?>">Change Book Image</a>
 </div></div>
 
 <div class="col-md-6">
 <div class="form-group">
 <label>Book Name<span style="color:red;">*</span></label>
-<input class="form-control" type="text" name="bookname" value="<?php echo htmlentities($result->BookName);?>" required />
+<input class="form-control" type="text" name="itemname" value="<?php echo htmlentities($result->BookName);?>" required />
 </div></div>
 
 <div class="col-md-6">
@@ -160,7 +160,7 @@ continue;
    
     </div>
     </div>
-     <!-- CONTENT-WRAPPER SECTION END-->
+     
      <?php include 'includes/footer.php'; ?>
 </body>
 </html>

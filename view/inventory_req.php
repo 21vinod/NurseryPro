@@ -35,9 +35,9 @@ if (strlen($_SESSION['alogin']) == 0) {
     </head>
 
     <body>
-        <!------MENU SECTION START-->
+        
         <?php include 'includes/admin-menu.php'; ?>
-        <!-- MENU SECTION END-->
+        
 
         <!-- Tasks creation -->
         <div class="content-wrapper">
@@ -86,7 +86,7 @@ if (strlen($_SESSION['alogin']) == 0) {
         <!-- Task Creation end -->
 
 
-        <!-- CONTENT-WRAPPER SECTION END-->
+        
         <?php include 'includes/footer.php'; ?>
     </body>
 

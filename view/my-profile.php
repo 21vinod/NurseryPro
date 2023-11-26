@@ -6,13 +6,13 @@ header('location:index.php');
 else{ 
 if(isset($_POST['update']))
 {    
-$sid=$_SESSION['stdid'];  
+$uid=$_SESSION['uid'];  
 $fname=$_POST['fullanme'];
 $mobileno=$_POST['mobileno'];
 
 $sql="update users set FullName=:fname,MobileNumber=:mobileno where user_id=:uid";
 $query = $pdo->prepare($sql);
-$query->bindParam(':uid',$sid,PDO::PARAM_STR);
+$query->bindParam(':uid',$uid,PDO::PARAM_STR);
 $query->bindParam(':fname',$fname,PDO::PARAM_STR);
 $query->bindParam(':mobileno',$mobileno,PDO::PARAM_STR);
 $query->execute();
@@ -29,9 +29,9 @@ echo '<script>alert("Your profile has been updated")</script>';
     <title>NurseryPro | User Signup</title>
 </head>
 <body>
-    <!------MENU SECTION START-->
+    
 <?php include('includes/user-menu.php');?>
-<!-- MENU SECTION END-->
+
     <div class="content-wrapper">
          <div class="container">
         <div class="row pad-botm">
@@ -51,10 +51,10 @@ echo '<script>alert("Your profile has been updated")</script>';
                         <div class="panel-body">
                             <form name="signup" method="post">
 <?php 
-$sid=$_SESSION['stdid'];
+$uid=$_SESSION['uid'];
 $sql="SELECT user_id,FullName,EmailId,MobileNumber,RegDate,UpdationDate,Status from  users  where user_id=:uid ";
 $query = $pdo -> prepare($sql);
-$query-> bindParam(':uid', $sid, PDO::PARAM_STR);
+$query-> bindParam(':uid', $uid, PDO::PARAM_STR);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
 $cnt=1;
@@ -91,7 +91,7 @@ foreach($results as $result)
 
 
 <div class="form-group">
-<label>Enter Full Name</label>
+<label>Full Name</label>
 <input class="form-control" type="text" name="fullanme" value="<?php echo htmlentities($result->FullName);?>" autocomplete="off" required />
 </div>
 
@@ -102,7 +102,7 @@ foreach($results as $result)
 </div>
                                         
 <div class="form-group">
-<label>Enter Email</label>
+<label>Email</label>
 <input class="form-control" type="email" name="email" id="emailid" value="<?php echo htmlentities($result->EmailId);?>"  autocomplete="off" required readonly />
 </div>
 <?php }} ?>
@@ -116,7 +116,7 @@ foreach($results as $result)
         </div>
     </div>
     </div>
-     <!-- CONTENT-WRAPPER SECTION END-->
+     
      <?php include 'includes/footer.php'; ?>
 </body>
 </html>

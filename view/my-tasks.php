@@ -1,20 +1,31 @@
 <?php
 if (strlen($_SESSION['login']) == 0) {
     header('location:index.php');
-} else {
-    if (isset($_GET['assign'])) {
+    return;
+} elseif(isset($_GET['assign'])) {
         $id = $_GET['assign'];
-        $sql = "UPDATE tasks SET assigned_worker=:workerid, status='Assigned' Where id=:taskid";
+        $sql = "UPDATE tasks SET user_id=:user_id, status='Assigned' Where task_id=:taskid";
         $query = $pdo->prepare($sql);
-        $query->bindParam(':workerid', $_SESSION['stdid'], PDO::PARAM_STR);
+        $query->bindParam(':user_id', $_SESSION['uid'], PDO::PARAM_STR);
         $query->bindParam(':taskid', $id, PDO::PARAM_STR);
         $query->execute();
-        $_SESSION['assignmsg'] = "Assigned successfully";
+        $_SESSION['msg'] = "Assigned successfully";
         header('location:index.php?action=my-tasks');
+        return;
     }
-
-
-    ?>
+    elseif(isset($_GET['unassign'])) {
+        $id = $_GET['assign'];
+        $unassign = 0;
+        $sql = "UPDATE tasks SET user_id=:user_id, status='Open' Where task_id=:taskid";
+        $query = $pdo->prepare($sql);
+        $query->bindParam(':user_id', $unassign, PDO::PARAM_STR);
+        $query->bindParam(':taskid', $id, PDO::PARAM_STR);
+        $query->execute();
+        $_SESSION['msg'] = "Unassigned successfully";
+        header('location:index.php?action=my-tasks');
+        return;
+    }
+?>
     <!DOCTYPE html>
     <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -24,7 +35,7 @@ if (strlen($_SESSION['login']) == 0) {
     </head>
 
     <body>
-        <!------MENU SECTION START-->
+        
         <?php
         if (strlen($_SESSION['login']) != 0) {
             include 'includes/user-menu.php';
@@ -32,7 +43,7 @@ if (strlen($_SESSION['login']) == 0) {
             include 'includes/admin-menu.php';
         }
         ?>
-        <!-- MENU SECTION END-->
+        
 
         <!-- My tasks -->
         <div class="content-wrapper">
@@ -43,7 +54,7 @@ if (strlen($_SESSION['login']) == 0) {
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <!-- Advanced Tables -->
+                            
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     My Tasks
@@ -64,11 +75,11 @@ if (strlen($_SESSION['login']) == 0) {
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $sid = $_SESSION['stdid'];
-                                                //$sql="SELECT tblbooks.BookName,tblbooks.ISBNNumber,tblissuedbookdetails.IssuesDate,tblissuedbookdetails.ReturnDate,tblissuedbookdetails.id as rid,tblissuedbookdetails.fine from  tblissuedbookdetails join users on users.user_id=tblissuedbookdetails.user_id join tblbooks on tblbooks.id=tblissuedbookdetails.BookId where users.user_id=:uid order by tblissuedbookdetails.id desc";
-                                                $sql = "SELECT * from  tasks where assigned_worker=:uid";
+                                                $uid = $_SESSION['uid'];
+                                                //$sql="SELECT tblitems.BookName,tblitems.ISBNNumber,tblissueditemdetails.IssuesDate,tblissueditemdetails.ReturnDate,tblissueditemdetails.id as rid,tblissueditemdetails.fine from  tblissueditemdetails join users on users.user_id=tblissueditemdetails.user_id join tblitems on tblitems.id=tblissueditemdetails.BookId where users.user_id=:uid order by tblissueditemdetails.id desc";
+                                                $sql = "SELECT * FROM  tasks WHERE user_id=:uid";
                                                 $query = $pdo->prepare($sql);
-                                                $query-> bindParam(':uid', $sid, PDO::PARAM_STR);
+                                                $query-> bindParam(':uid', $uid, PDO::PARAM_STR);
                                                 $query->execute();
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
                                                 $cnt = 1;
@@ -83,10 +94,10 @@ if (strlen($_SESSION['login']) == 0) {
                                                             </td>
 
                                                             <td class="center">
-                                                                <?php echo htmlentities($result->description); ?>
+                                                                <?php echo htmlentities($result->desc); ?>
                                                             </td>
                                                             <td class="center">
-                                                                <?php echo htmlentities($result->assigned_worker); ?>
+                                                                <?php echo htmlentities($result->user_id); ?>
                                                             </td>
                                                             <td class="center">
                                                                 <a href="#" class="btn btn-success btn-xs">
@@ -95,12 +106,11 @@ if (strlen($_SESSION['login']) == 0) {
                                                             </td>
                                                             <td class="center">
                                                                 
-                                                                    <input type='hidden' name='taskId' value=<?php echo htmlentities($result->id); ?>>
-                                                                    <a href="my-tasks.php?assign=<?php echo htmlentities($result->id); ?>"
-                                                                        onclick="return confirm('Are you sure you want to Assign the task?');">
+                                                                    <input type='hidden' name='taskId' value=<?=htmlentities($result->task_id); ?>>
+                                                                    <a href="my-tasks.php?unassign=<?= htmlentities($result->task_id); ?>"
+                                                                        onclick="return confirm('Are you sure you want to Unassign the task?');">
                                                                         <button type="button" class="btn btn-danger"><i
-                                                                            class="fa fa-pencil">Assign to
-                                                                            me</i></button>
+                                                                            class="fa fa-pencil">Unassign</i></button>
                                                                     </a>
                                                                
                                                             </td>
@@ -115,16 +125,12 @@ if (strlen($_SESSION['login']) == 0) {
 
                                 </div>
                             </div>
-                            <!--End Advanced Tables -->
+                            
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
-
 
 
         <div class="content-wrapper">
@@ -135,7 +141,7 @@ if (strlen($_SESSION['login']) == 0) {
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <!-- Advanced Tables -->
+                            
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     Tasks Available
@@ -156,11 +162,11 @@ if (strlen($_SESSION['login']) == 0) {
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $sid = $_SESSION['stdid'];
-                                                //$sql="SELECT tblbooks.BookName,tblbooks.ISBNNumber,tblissuedbookdetails.IssuesDate,tblissuedbookdetails.ReturnDate,tblissuedbookdetails.id as rid,tblissuedbookdetails.fine from  tblissuedbookdetails join users on users.user_id=tblissuedbookdetails.user_id join tblbooks on tblbooks.id=tblissuedbookdetails.BookId where users.user_id=:uid order by tblissuedbookdetails.id desc";
-                                                $sql = "SELECT * from  tasks";
+                                                $uid = $_SESSION['uid'];
+                                                //$sql="SELECT tblitems.BookName,tblitems.ISBNNumber,tblissueditemdetails.IssuesDate,tblissueditemdetails.ReturnDate,tblissueditemdetails.id as rid,tblissueditemdetails.fine from  tblissueditemdetails join users on users.user_id=tblissueditemdetails.user_id join tblitems on tblitems.id=tblissueditemdetails.BookId where users.user_id=:uid order by tblissueditemdetails.id desc";
+                                                $sql = "SELECT * FROM  tasks";
                                                 $query = $pdo->prepare($sql);
-                                                //$query-> bindParam(':uid', $sid, PDO::PARAM_STR);
+                                                //$query-> bindParam(':uid', $uid, PDO::PARAM_STR);
                                                 $query->execute();
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
                                                 $cnt = 1;
@@ -175,10 +181,10 @@ if (strlen($_SESSION['login']) == 0) {
                                                             </td>
 
                                                             <td class="center">
-                                                                <?php echo htmlentities($result->description); ?>
+                                                                <?php echo htmlentities($result->desc); ?>
                                                             </td>
                                                             <td class="center">
-                                                                <?php echo htmlentities($result->assigned_worker); ?>
+                                                                <?php echo htmlentities($result->user_id); ?>
                                                             </td>
                                                             <td class="center">
                                                                 <a href="#" class="btn btn-success btn-xs">
@@ -188,8 +194,8 @@ if (strlen($_SESSION['login']) == 0) {
                                                             </td>
                                                             <td class="center">
                                                                 
-                                                                    <input type='hidden' name='taskId' value=<?php echo htmlentities($result->id); ?>>
-                                                                    <a href="my-tasks.php?assign=<?php echo htmlentities($result->id); ?>"
+                                                                    <input type='hidden' name='taskId' value=<?php echo htmlentities($result->task_id); ?>>
+                                                                    <a href="my-tasks.php?assign=<?php echo htmlentities($result->task_id); ?>"
                                                                         onclick="return confirm('Are you sure you want to Assign the task?');">
                                                                         <button type="button" class="btn btn-danger"><i
                                                                             class="fa fa-pencil">Assign to
@@ -208,20 +214,13 @@ if (strlen($_SESSION['login']) == 0) {
 
                                 </div>
                             </div>
-                            <!--End Advanced Tables -->
+                            
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
-
-        <!-- CONTENT-WRAPPER SECTION END-->
+        
         <?php include 'includes/footer.php'; ?>
-
     </body>
-
     </html>
-<?php } ?>

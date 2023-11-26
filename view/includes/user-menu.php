@@ -26,7 +26,7 @@
                 <div class="col-md-12">
                     <div class="navbar-collapse collapse ">
                         <ul id="menu-top" class="nav navbar-nav navbar-right">
-                            <li><a href="index.php?action=dashboard" class="menu-top-active">DASHBOARD</a></li>
+                            <li><a href="index.php?action=user-dashboard" class="menu-top-active">DASHBOARD</a></li>
                             <li>
                                 <a href="#" class="dropdown-toggle" id="ddlmenuItem" data-toggle="dropdown"> <i
                                         class="fa fa-angle-down">Tasks</i></a>
@@ -134,10 +134,9 @@
                         <div class="navbar-collapse collapse ">
                             <ul id="menu-top" class="nav navbar-nav navbar-right">
 
-                                <li><a href="index.php?action=login">Home</a></li>
-                                <li><a href="index.php?action=login">User Login</a></li>
-                                <li><a href="index.php?action=signup">User Signup</a></li>
-                                <li><a href="index.php?action=adminlogin">Admin Login</a></li>
+                                <li><a href="index.php?action=home">Home</a></li>
+                                <li><a href="index.php?action=login">Login</a></li>
+                                <li><a href="index.php?action=signup">Signup</a></li>
 
                             </ul>
                         </div>

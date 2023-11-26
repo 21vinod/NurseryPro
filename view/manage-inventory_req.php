@@ -23,7 +23,7 @@ return;
     </head>
 
     <body>
-        <!------MENU SECTION START-->
+        
         <?php
         if (strlen($_SESSION['login']) != 0) {
             include 'includes/user-menu.php';
@@ -31,7 +31,7 @@ return;
             include 'includes/admin-menu.php';
         }
         ?>
-        <!-- MENU SECTION END-->
+        
 
         <!-- manage tasks -->
         <div class="content-wrapper">
@@ -82,7 +82,7 @@ return;
 
                     <div class="row">
                         <div class="col-md-12">
-                            <!-- Advanced Tables -->
+                            
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     Tasks Listing
@@ -143,7 +143,7 @@ return;
 
                                 </div>
                             </div>
-                            <!--End Advanced Tables -->
+                            
                         </div>
                     </div>
                 </div>
@@ -152,7 +152,7 @@ return;
         <!-- manage tasks end -->
 
 
-        <!-- CONTENT-WRAPPER SECTION END-->
+        
         <?php include 'includes/footer.php'; ?>
     </body>
 

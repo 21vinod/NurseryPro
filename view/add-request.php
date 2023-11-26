@@ -37,9 +37,9 @@ if (strlen($_SESSION['login']) == 0) {
     </head>
 
     <body>
-        <!------MENU SECTION START-->
+        
         <?php include 'includes/user-menu.php'; ?>
-        <!-- MENU SECTION END-->
+        
 
         <!-- Tasks creation -->
         <div class="content-wrapper">
@@ -71,7 +71,7 @@ if (strlen($_SESSION['login']) == 0) {
                                     <div class="form-group">
                                         <label>Requested By</label>
                                         <input class="form-control" type="text" name="req_by"
-                                            value="<?PHP echo $_SESSION['stdid'] ?>" autocomplete="off" readonly />
+                                            value="<?PHP echo $_SESSION['uid'] ?>" autocomplete="off" readonly />
                                     </div>
                                     <div class="form-group">
                                         <label>Status</label>
@@ -102,7 +102,7 @@ if (strlen($_SESSION['login']) == 0) {
         <!-- Task Creation end -->
 
 
-        <!-- CONTENT-WRAPPER SECTION END-->
+        
         <?php include 'includes/footer.php'; ?>
     </body>
 

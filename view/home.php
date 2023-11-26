@@ -1,52 +1,27 @@
 <?php
-if ($_SESSION['login'] != '') {
-    $_SESSION['login'] = '';
-}
-if (isset($_POST['login'])) {
-
-    $email = $_POST['emailid'];
-    $password = md5($_POST['password']);
-    $sql = "SELECT EmailId,Password,user_id,Status FROM users WHERE EmailId=:email and Password=:password";
-    $query = $pdo->prepare($sql);
-    $query->bindParam(':email', $email, PDO::PARAM_STR);
-    $query->bindParam(':password', $password, PDO::PARAM_STR);
-    $query->execute();
-    $results = $query->fetchAll(PDO::FETCH_OBJ);
-
-    if ($query->rowCount() > 0) {
-        foreach ($results as $result) {
-            $_SESSION['stdid'] = $result->user_id;
-            if ($result->Status == 1) {
-                $_SESSION['login'] = $_POST['emailid'];
-                echo "<script type='text/javascript'> document.location ='index.php?action=user-dashboard'; </script>";
-            } else {
-                echo "<script>alert('Your Account Has been blocked .Please contact admin');</script>";
-
-            }
-        }
-
-    } else {
-        echo "<script>alert('Invalid Details');</script>";
-    }
-}
+session_start();
+error_reporting(0);
+require_once('model/pdo.php');
 
 ?>
+
 <!DOCTYPE html>
 <html lang='en' xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-<title>NurseryPro</title>
-<?php include('includes/header.php'); ?>
+    <title>NurseryPro</title>
+    <?php include('includes/header.php'); ?>
 </head>
 
 <body>
-    <!------MENU SECTION START-->
+
+
     <?php include('includes/user-menu.php'); ?>
-    <!-- MENU SECTION END-->
+
     <div class="content-wrapper">
         <div class="container">
-            <!--Slider---->
-            <div class="row">
+
+            <!-- <div class="row">
                 <div class="col-md-10 col-sm-8 col-xs-12 col-md-offset-1">
                     <div id="carousel-example" class="carousel slide slide-bdr" data-ride="carousel">
                         <div class="carousel-inner">
@@ -60,69 +35,74 @@ if (isset($_POST['login'])) {
                                 <img src="public/img/3.jpg" alt="" />
                             </div>
                         </div>
-                        <!--INDICATORS-->
                         <ol class="carousel-indicators">
                             <li data-target="#carousel-example" data-slide-to="0" class="active"></li>
                             <li data-target="#carousel-example" data-slide-to="1"></li>
                             <li data-target="#carousel-example" data-slide-to="2"></li>
                         </ol>
-                        <!--PREVIUS-NEXT BUTTONS-->
                         <a class="left carousel-control" href="#carousel-example" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left"></span>
                         </a>
                         <a class="right carousel-control" href="#carousel-example" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right"></span>
                         </a>
                     </div>
                 </div>
             </div>
-            <hr />
-
-
-
+            <hr /> -->
+            <?php include("includes/flash.php") ?>
             <div class="row pad-botm">
                 <div class="col-md-12">
-                    <h4 class="header-line">USER LOGIN FORM</h4>
+                    <h4 class="header-line">Available Plants</h4>
                 </div>
             </div>
             <a name="ulogin"></a>
-            <!--LOGIN PANEL START-->
-            <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            LOGIN FORM
-                        </div>
-                        <div class="panel-body">
-                            <form role="form" method="post">
 
-                                <div class="form-group">
-                                    <label>Enter Email id</label>
-                                    <input class="form-control" type="text" name="emailid" required
-                                        autocomplete="off" />
-                                </div>
-                                <div class="form-group">
-                                    <label>Password</label>
-                                    <input class="form-control" type="password" name="password" required
-                                        autocomplete="off" />
-                                    <p class="help-block"><a href="index.php?action=user-forgot-password">Forgot Password</a></p>
-                                </div>
+            <div class="container mt-4">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity Available</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $stmt = $pdo->query("SELECT * FROM items");
+                        $count = 0;
+
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            $src = $row['image'];
+                            echo "<tr scope='row'><td>";
+                            echo (htmlentities(++$count));
+                            echo ("</td><td><img width='120' height='150' src='public/img/plants/$src' alt=''>");
+
+                            echo ("</td><td>");
+                            echo (htmlentities($row['name']));
+                            echo ("</td><td>");
+
+                            echo (htmlentities($row['desc']));
+                            echo ("</td><td>");
+                            echo (htmlentities($row['type']));
+                            echo ("</td><td>");
+                            echo ("$" . htmlentities($row['price']));
+                            echo ("</td><td>");
+                            echo (htmlentities($row['avl_qty']));
+                            echo ("</td><td>");
+                            echo ("</td></tr>");
+                        }
+                        ?>
 
 
-
-                                <button type="submit" name="login" class="btn btn-info">LOGIN </button> | <a
-                                    href="index.php?action=signup">Not Register Yet</a>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                    </tbody>
+                </table>
             </div>
-            <!---LOGIN PABNEL END-->
-
-
         </div>
     </div>
-    <!-- CONTENT-WRAPPER SECTION END-->
+
     <?php include 'includes/footer.php'; ?>
 
 </body>
