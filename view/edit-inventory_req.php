@@ -7,24 +7,26 @@ if (strlen($_SESSION['alogin']) == 0 && $_SESSION['login'] == 0) {
     return;
 } elseif (isset($_POST['update'])) {
    
-    $req_details = $_POST['req_details'];
+    $details = $_POST['details'];
     $user_id = $_POST['user_id'];
+    $item_id = $_POST['item_id'];
     $status = $_POST['status'];
     $approval_details = $_POST['approval_details'];
-    $astn_req_id = intval($_POST['id']);
-   //UPDATE `assistance_req` SET `req_details`='test req',`user_id`='1003',`status`='Approved' WHERE `astn_req_id`=3;
-    $sql = "UPDATE `assistance_req` SET `req_details`=:req_details,`user_id`=:user_id,`status`=:status, `approval_details`=:approval_details WHERE `astn_req_id`=:astn_req_id";
+    $inv_req_id = intval($_POST['id']);
+   //UPDATE `assistance_req` SET `details`='test req',`user_id`='1003',`status`='Approved' WHERE `inv_req_id`=3;
+    $sql = "UPDATE `inventory_req` SET `details`=:details,`user_id`=:user_id,`item_id`=:item_id,`status`=:status, `approval_details`=:approval_details WHERE `inv_req_id`=:inv_req_id";
     $query = $pdo->prepare($sql);
    
-    $query->bindParam(':req_details', $req_details, PDO::PARAM_STR);
+    $query->bindParam(':details', $details, PDO::PARAM_STR);
+    $query->bindParam(':item_id', $item_id, PDO::PARAM_STR);
     $query->bindParam(':user_id', $user_id, PDO::PARAM_STR);
     $query->bindParam(':status', $status, PDO::PARAM_STR);
     $query->bindParam(':approval_details', $approval_details, PDO::PARAM_STR);
-    $query->bindParam(':astn_req_id', $astn_req_id, PDO::PARAM_STR);
+    $query->bindParam(':inv_req_id', $inv_req_id, PDO::PARAM_STR);
     $query->execute();
     echo "<script> alert('tesr');</script>";
     $_SESSION['msg'] = "Request updated successfully";
-    header('location:index.php?action=manage-requests');
+    header('location:index.php?action=manage-inventory_req');
     return;
 }
 ?>
@@ -33,7 +35,7 @@ if (strlen($_SESSION['alogin']) == 0 && $_SESSION['login'] == 0) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>NurseryPro | Edit tasks</title>
+    <title>NurseryPro | Edit Inventory Request</title>
     <?php include('view/includes/header.php'); ?>
 </head>
 
@@ -43,7 +45,7 @@ if (strlen($_SESSION['alogin']) == 0 && $_SESSION['login'] == 0) {
         <div class="container">
             <div class="row pad-botm">
                 <div class="col-md-12">
-                    <h4 class="header-line">Edit Task</h4>
+                    <h4 class="header-line">Edit Request</h4>
                 </div>
             </div>
 
@@ -53,16 +55,16 @@ if (strlen($_SESSION['alogin']) == 0 && $_SESSION['login'] == 0) {
                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                     <div class=" panel panel-info">
                         <div class="panel-heading">
-                            Task Info
+                            Request Info
                         </div>
 
                         <div class="panel-body">
                             <form role="form" method="post">
                                 <?php
-                                $astn_req_id = intval($_GET['id']);
-                                $sql = "SELECT * FROM `assistance_req` WHERE `astn_req_id`=:astn_req_id";
+                                $inv_req_id = intval($_GET['id']);
+                                $sql = "SELECT * FROM `inventory_req` WHERE `inv_req_id`=:inv_req_id";
                                 $query = $pdo->prepare($sql);
-                                $query->bindParam(':astn_req_id', $astn_req_id, PDO::PARAM_STR);
+                                $query->bindParam(':inv_req_id', $inv_req_id, PDO::PARAM_STR);
                                 $query->execute();
                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
                                 if ($query->rowCount() > 0) {
@@ -70,8 +72,13 @@ if (strlen($_SESSION['alogin']) == 0 && $_SESSION['login'] == 0) {
                                         ?>
                                         <div class="form-group">
                                             <label>Request details</label>
-                                            <input class="form-control" type="text" name="req_details"
-                                                value="<?php echo htmlentities($result->req_details); ?>" required />
+                                            <input class="form-control" type="text" name="details"
+                                                value="<?php echo htmlentities($result->details); ?>" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Item ID</label>
+                                            <input class="form-control" type="text" name="item_id"
+                                                value="<?php echo htmlentities($result->item_id); ?>" required />
                                         </div>
                                         <div class="form-group">
                                             <label>Requested By</label>
@@ -79,11 +86,17 @@ if (strlen($_SESSION['alogin']) == 0 && $_SESSION['login'] == 0) {
                                                 value="<?php echo htmlentities($result->user_id); ?>" required />
                                         </div>
                                         <div class="form-group">
+                                            <label>Quantity</label>
+                                            <input class="form-control" type="text" name="quantity"
+                                                value="<?php echo htmlentities($result->quantity); ?>" required />
+                                        </div>
+                                        <!-- //inventory_req: inv_req_id	item_id	user_id	quantity	details	status	approval_details -->
+                                        <div class="form-group">
                                             <label>Status</label>
                                             <div class="list">
                                                 <select name="status">
-                                                    <option value="Open">Open</option>
-                                                    <option value="Approved">Approved</option>
+                                                    <option value="Open">Open</>
+                                                    <option voptionalue="Approved">Approved</option>
                                                     <option value="Declines">Declines</option>
                                                     <option value="Need more details">Need more details</option>
                                                 </select>
@@ -97,7 +110,7 @@ if (strlen($_SESSION['alogin']) == 0 && $_SESSION['login'] == 0) {
                                     <?php }
                                 } ?>
                                 <input type="hidden" type="text" name="id"
-                                    value="<?php echo htmlentities($result->astn_req_id); ?>" required />
+                                    value="<?php echo htmlentities($result->inv_req_id); ?>" required />
                                 <button type="submit" name="update" class="btn btn-info">Update </button>
                                 <button type="reset" name="update" class="btn btn-cancel">Cancel </button>
                             </form>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+//error_reporting(0);
 require_once('model/pdo.php');
 
 // $param1 = $_GET['id'];
@@ -13,9 +13,9 @@ if (isset($_GET['id'])) {
         $query = $pdo->prepare($sql);
         $query->bindParam(':id', $id, PDO::PARAM_STR);
         $query->execute();
-        $_SESSION['delmsg'] = "Task deleted successfully!!";
+        $_SESSION['msg'] = "Task deleted successfully!!";
     } else {
-        $_SESSION['error'] = "You dont have permissions to Edit or Delete!!";
+        $_SESSION['error'] = "You dont have permissions to Delete!!";
     }
     header('Location:index.php?action=manage-tasks');
     return;

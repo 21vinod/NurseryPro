@@ -4,16 +4,20 @@ if (strlen($_SESSION['alogin']) == 0) {
 } else {
 
     if (isset($_POST['create'])) {
-        $item_name = $_POST['item_name'];
+        $item_id = $_POST['item_id'];
+        $user_id = $_SESSION['uid'];
         $quantity = $_POST['quantity'];
-        $description = $_POST['description'];
-        // inventory_req: id	item_name	quantity	description
-        $approval_details = $_POST['approval_details'];
-        $sql = "INSERT INTO  inventory_req (item_name,	quantity, description) VALUES(:item_name,	:quantity, :description)";
+        $details = $_POST['details'];
+        $status = "Open";
+        // inventory_req: id	item_id	quantity	details
+        //inventory_req: inv_req_id	item_id	user_id	quantity	details	status	approval_details
+        $sql = "INSERT INTO  `inventory_req` (item_id,user_id,status, quantity, details) VALUES(:item_id,:user_id,:status,:quantity, :details)";
         $query = $pdo->prepare($sql);
-        $query->bindParam(':item_name', $item_name, PDO::PARAM_STR);
+        $query->bindParam(':item_id', $item_id, PDO::PARAM_STR);
+        $query->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+        $query->bindParam(':status', $status, PDO::PARAM_STR);
         $query->bindParam(':quantity', $quantity, PDO::PARAM_STR);
-        $query->bindParam(':description', $description, PDO::PARAM_STR);
+        $query->bindParam(':details', $details, PDO::PARAM_STR);
         $query->execute();
         $lastInsertId = $pdo->lastInsertId();
         if ($lastInsertId) {
@@ -35,11 +39,11 @@ if (strlen($_SESSION['alogin']) == 0) {
     </head>
 
     <body>
-        
-        <?php include 'includes/admin-menu.php'; ?>
-        
 
-        <!-- Tasks creation -->
+        <?php include 'includes/admin-menu.php'; ?>
+
+
+        
         <div class="content-wrapper">
             <div class="container">
                 <div class="row pad-botm">
@@ -57,9 +61,10 @@ if (strlen($_SESSION['alogin']) == 0) {
                             <div class="panel-body">
                                 <form role="form" method="post">
                                     <div class="form-group">
-                                        <!-- // inventory_req: id	item_name	quantity	description -->
-                                        <label>Item name</label>
-                                        <input class="form-control" type="text" name="item_name" autocomplete="off"
+                                        <!-- // inventory_req: id	item_id	quantity	details -->
+                                        <!-- //inventory_req: inv_req_id	item_id	user_id	quantity	details	status	approval_details -->
+                                        <label>Item name (item id)</label>
+                                        <input class="form-control" type="text" name="item_id" autocomplete="off"
                                             required />
                                     </div>
                                     <div class="form-group">
@@ -68,8 +73,8 @@ if (strlen($_SESSION['alogin']) == 0) {
                                             required />
                                     </div>
                                     <div class="form-group">
-                                        <label>Description</label>
-                                        <textarea class="form-control" type="text" name="description"
+                                        <label>Details</label>
+                                        <textarea class="form-control" type="text" name="details"
                                             autocomplete="off"></textarea>
                                     </div>
 
@@ -83,10 +88,10 @@ if (strlen($_SESSION['alogin']) == 0) {
 
             </div>
         </div>
-        <!-- Task Creation end -->
-
-
         
+
+
+
         <?php include 'includes/footer.php'; ?>
     </body>
 

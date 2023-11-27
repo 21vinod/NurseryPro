@@ -54,14 +54,18 @@
                                 <li role="presentation"><a role="menuitem" tabindex="-1"
                                         href="index.php?action=manage-inventory_req">Manage Inventory Request</a></li>
                                 <li role="presentation"><a role="menuitem" tabindex="-1"
-                                        href="index.php?action=manage-sales">Sales</a>
+                                        href="index.php?action=add-sales">Add Sales</a>
                                 </li>
                                 <li role="presentation"><a role="menuitem" tabindex="-1"
-                                        href="index.php?action=manage-purchases">Purchases</a></li>
+                                        href="index.php?action=manage-sales">Manage Sales</a>
+                                </li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1"
+                                        href="index.php?action=add-purchases">Add Purchases</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1"
+                                        href="index.php?action=manage-purchases">Manage Purchases</a></li>
                             </ul>
                         </li>
                         <li><a href="index.php?action=reg-users">Reg User</a></li>
-
                         <li><a href="index.php?action=admin-change-password">Change Password</a></li>
                     </ul>
                 </div>

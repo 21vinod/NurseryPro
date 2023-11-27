@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+//error_reporting(0);
 require_once('model/pdo.php');
 
 $action = isset($_GET['action']) ? $_GET['action'] : 'home';
@@ -27,6 +27,12 @@ switch ($action) {
     case 'add-tasks':
         include('view/add-tasks.php');
         break;
+    case 'add-sales':
+        include('view/add-sales.php');
+        break;
+    case 'add-purchases':
+        include('view/add-purchases.php');
+        break;
     case 'change-password':
         include('view/change-password.php');
         break;
@@ -35,6 +41,12 @@ switch ($action) {
         break;
     case 'edit-task':
         include('view/edit-task.php');
+        break;
+        case 'edit-sales':
+            include('view/edit-sales.php');
+            break;
+    case 'edit-inventory_req':
+        include('view/edit-inventory_req.php');
         break;
     case 'delete-task':
         include("model/delete-task.php");

@@ -9,7 +9,7 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
         $query = $pdo->prepare($sql);
         $query->bindParam(':id', $id, PDO::PARAM_STR);
         $query->execute();
-        $_SESSION['delmsg'] = "Task deleted successfully!!";
+        $_SESSION['msg'] = "Task deleted successfully!!";
     } else {
         $_SESSION['error'] = "You dont have permissions to Edit or Delete!!";
     }
@@ -55,7 +55,7 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
                             <div class="panel-body">
                                 <div class="table-responsive">
                                     <table class="table table-striped table-bordered table-hover"
-                                        id="dataTables-example">
+                                       >
                                         <thead>
                                             <tr>
                                                 <th>#</th>

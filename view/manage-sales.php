@@ -1,129 +1,149 @@
 <?php
-if (strlen($_SESSION['alogin']) == 0) {
+session_start();
+//error_reporting(0);
+require_once('model/pdo.php');
+if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
     header('location:index.php');
-} else {
-
-    if (isset($_POST['create'])) {
-        $customer_name = $_POST['customer_name'];
-        $mobile_num = $_POST['mobile_num'];
-        $item = $_POST['item'];
-        $quantity = $_POST['quantity'];
-        $item_price = $_POST['item_price'];
-        // sales: id	customer_name	mobile_num	item	quantity	item_price
-
-        $sql = "INSERT INTO  sales (customer_name,mobile_num,item,quantity,item_price) VALUES(:customer_name,:mobile_num,:item,:quantity,:item_price)";
+    return;
+} elseif (isset($_GET['del'])) {
+    if ($_SESSION['uid'] == 1000) {
+        $id = $_GET['del'];
+        $sql = "DELETE FROM `transactions` WHERE `trans_id`=:id AND `type`='Sell'";
         $query = $pdo->prepare($sql);
-        $query->bindParam(':customer_name', $customer_name, PDO::PARAM_STR);
-        $query->bindParam(':mobile_num', $mobile_num, PDO::PARAM_STR);
-        $query->bindParam(':item', $item, PDO::PARAM_STR);
-        $query->bindParam(':quantity', $quantity, PDO::PARAM_STR);
-        $query->bindParam(':item_price', $item_price, PDO::PARAM_STR);
+        $query->bindParam(':id', $id, PDO::PARAM_STR);
         $query->execute();
-
-        $lastInsertId = $pdo->lastInsertId();
-        if ($lastInsertId) {
-            $_SESSION['msg'] = "Sale Order Listed successfully";
-        } else {
-            $_SESSION['error'] = "Something went wrong. Please try again";
-        }
-        header('location:index.php?action=manage-sales');
-        return;
+        $_SESSION['msg'] = "Sales record deleted scuccessfully!!";
+    } else {
+        $_SESSION['error'] = "You dont have permissions to Delete!!";
     }
+    header('location:index.php?action=manage-sales');
+    return;
+}
+?>
 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>NurseryPro | Manage Sales</title>
+    <?php include('view/includes/header.php'); ?>
+</head>
+
+<body>
+
+    <?php
+    if (strlen($_SESSION['login']) != 0) {
+        include 'includes/user-menu.php';
+    } else if (strlen($_SESSION['alogin']) != 0) {
+        include 'includes/admin-menu.php';
+    }
     ?>
-    <!DOCTYPE html>
-    <html xmlns="http://www.w3.org/1999/xhtml">
 
-    <head>
-        <title>NurseryPro | Sales</title>
-        <?php include('view/includes/header.php'); ?>
-        <script>
-            // Function to calculate and display multiplication
-            function calculateMultiplication() {
-                // Get the values from the input fields
-                var num1 = document.getElementById("quantity").value;
-                var num2 = document.getElementById("price").value;
-
-                // Perform multiplication
-                var result = num1 * num2;
-
-                // Display the result
-                document.getElementById("total").innerHTML = result;
-            }
-        </script>
-        
-    </head>
-
-    <body>
-        
-        <?php include 'includes/admin-menu.php'; ?>
-        
-
-        <!-- Tasks creation -->
-        <div class="content-wrapper">
-            <div class="container">
-                <div class="row pad-botm">
-                    <div class="col-md-12">
-                        <h4 class="header-line">New Sale Order</h4>
-                    </div>
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="row pad-botm">
+                <div class="col-md-12">
+                    <h4 class="header-line">Sales records</h4>
                 </div>
                 <?php include('includes/flash.php'); ?>
+
                 <div class="row">
-                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                        <div class="panel panel-info">
+                    <div class="col-md-12">
+
+                        <div class="panel panel-default">
                             <div class="panel-heading">
-                                Sale Info
+                                Sales Listing
                             </div>
                             <div class="panel-body">
-                                <form role="form" method="post">
-                                    <div class="form-group">
-                                        <!-- // sales: id	customer_name	mobile_num	item	quantity	item_price -->
-                                        <label>Customer Name</label>
-                                        <input class="form-control" type="text" name="customer_name" autocomplete="on"
-                                            required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Mobile Number</label>
-                                        <input class="form-control" type="tel" name="mobile_num" autocomplete="on"
-                                            required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Item name</label>
-                                        <input class="form-control" type="text" name="item" autocomplete="on" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Quantity</label>
-                                        <input class="form-control" type="number" id="quantity" name="quantity" value="0"
-                                            oninput="calculateMultiplication()" ; autocomplete="off" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Item Price (in USD)</label>
-                                        <input class="form-control" type="number" id="price" name="item_price" value="0"
-                                            oninput="calculateMultiplication()" ; autocomplete="off" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Total Price (in USD)</label>.
-                                        <div id="total" class="form-control" readonly></div>
-                                        <!-- <input class="form-control" type="number" id="total" name="total" autocomplete="off"
-                                            readonly /> -->
-                                    </div>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover"
+                                       >
+                                        <thead>
 
-                                    <button type="submit" name="create" class="btn btn-info">Create Sale order </button>
-                                </form>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Customer Name</th>
+                                                <th>Mobile Number</th>
+                                                <th>Item ID</th>
+                                                <th>Quantity</th>
+                                                <th>Total</th>
+                                                <th>Status</th>
+                                                <th>Created Date</th>
+                                                <th>Updated Date</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $sql = "SELECT * FROM transactions WHERE type='Sell'";
+                                            $query = $pdo->prepare($sql);
+                                            $query->execute();
+                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                            $cnt = 1;
+                                            if ($query->rowCount() > 0) {
+                                                foreach ($results as $result) { ?>
+                                                    <tr class="odd gradeX">
+                                                        <td class="center">
+                                                            <?php echo htmlentities($cnt); ?>
+                                                        </td>
+                                                        <!-- // sales: trans_id	customer_name	mobile	item_id	quantity	status	created_date	updated_date -->
+                                                        <td class="center">
+                                                            <?php echo htmlentities($result->customer_name); ?>
+                                                        </td>
+                                                        <td class="center">
+                                                            <?php echo htmlentities($result->mobile); ?>
+                                                        </td>
+                                                        <td class="center">
+                                                            <?php echo htmlentities($result->item_id); ?>
+                                                        </td>
+                                                        <td class="center">
+                                                            <?php echo htmlentities($result->quantity); ?>
+                                                        </td>
+                                                        
+                                                        <td class="center">
+                                                            <?php echo htmlentities($result->quantity * 1.062 ); ?>
+                                                        </td>
+                                                        <td class="center">
+                                                            <a href="#" class="btn btn-success btn-xs">
+                                                                <?php echo htmlentities($result->status); ?>
+                                                            </a>
+                                                        </td>
+                                                        <td class="center">
+                                                            <?php echo htmlentities($result->created_date); ?>
+                                                        </td>
+                                                        <td class="center">
+                                                            <?php echo htmlentities($result->updated_date); ?>
+                                                        </td>
+                                                        <td class="center">
+                                                            <a
+                                                                href="index.php?action=edit-sales&id=<?php echo htmlentities($result->trans_id); ?>">
+                                                                <button class="btn btn-primary"><i class="fa fa-edit">Edit</i>
+                                                                </button>
+                                                            </a>
+                                                            <a href="index.php?action=manage-sales&del=<?php echo htmlentities($result->trans_id); ?>"
+                                                                onclick="return confirm('Are you sure you want to delete?');">
+                                                                <button class="btn btn-danger"><i
+                                                                        class="fa fa-pencil">Delete</i></button>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    <?php $cnt = $cnt + 1;
+                                                }
+                                            } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
                         </div>
+
                     </div>
-
                 </div>
-
             </div>
         </div>
-        <!-- Task Creation end -->
+    </div>
 
+    <?php include 'includes/footer.php'; ?>
+</body>
 
-        
-        <?php include 'includes/footer.php'; ?>
-    </body>
-
-    </html>
-<?php } ?>
+</html>

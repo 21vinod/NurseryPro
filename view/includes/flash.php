@@ -1,4 +1,6 @@
 <div class="row"> 
+    <?php $_SESSION['error'] = isset($_SESSION['error'])?$_SESSION['error']:""; ?>
+    <?php $_SESSION['msg'] = isset($_SESSION['msg'])?$_SESSION['msg']:""; ?>
     <?php if ($_SESSION['error'] != "") { ?>
         <div class="col-md-6">
             <div class="alert alert-danger">
@@ -14,24 +16,6 @@
                 <strong>Success :</strong>
                 <?php echo htmlentities($_SESSION['msg']); ?>
                 <?php unset($_SESSION['msg']) ?>
-            </div>
-        </div>
-    <?php } ?>
-    <?php if ($_SESSION['updatemsg'] != "") { ?>
-        <div class="col-md-6">
-            <div class="alert alert-success">
-                <strong>Success :</strong>
-                <?php echo htmlentities($_SESSION['updatemsg']); ?>
-                <?php unset($_SESSION['updatemsg']) ?>
-            </div>
-        </div>
-    <?php } ?>
-    <?php if ($_SESSION['delmsg'] != "") { ?>
-        <div class="col-md-6">
-            <div class="alert alert-success">
-                <strong>Success :</strong>
-                <?php echo htmlentities($_SESSION['delmsg']); ?>
-                <?php unset($_SESSION['delmsg']) ?>
             </div>
         </div>
     <?php } ?>

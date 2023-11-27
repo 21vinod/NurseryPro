@@ -37,7 +37,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 
     <?php include 'includes/admin-menu.php'; ?>
 
-    <!-- Tasks creation -->
+    
     <div class="content-wrapper">
         <div class="container">
             <div class="row pad-botm">
@@ -86,7 +86,7 @@ if (strlen($_SESSION['alogin']) == 0) {
             </div>
         </div>
     </div>
-    <!-- Task Creation end -->
+    
 
 
 
