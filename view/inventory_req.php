@@ -1,13 +1,14 @@
 <?php
+session_start();
 if (strlen($_SESSION['alogin']) == 0) {
     header('location:index.php');
 } else {
 
     if (isset($_POST['create'])) {
-        $item_id = $_POST['item_id'];
-        $user_id = $_SESSION['uid'];
-        $quantity = $_POST['quantity'];
-        $details = $_POST['details'];
+        $item_id = filter_var($_POST['item_id'], FILTER_SANITIZE_STRING);
+        $user_id =filter_var($_POST['uid'], FILTER_SANITIZE_STRING); 
+        $quantity =filter_var($_POST['quantity'], FILTER_SANITIZE_STRING); 
+        $details =filter_var($_POST['details'], FILTER_SANITIZE_STRING);
         $status = "Open";
         // inventory_req: id	item_id	quantity	details
         //inventory_req: inv_req_id	item_id	user_id	quantity	details	status	approval_details
@@ -40,7 +41,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 
     <body>
 
-        <?php include 'includes/admin-menu.php'; ?>
+        <?php include 'includes/user-menu.php'; ?>
 
 
         
@@ -60,13 +61,23 @@ if (strlen($_SESSION['alogin']) == 0) {
                             </div>
                             <div class="panel-body">
                                 <form role="form" method="post">
+                                    
                                     <div class="form-group">
-                                        <!-- // inventory_req: id	item_id	quantity	details -->
-                                        <!-- //inventory_req: inv_req_id	item_id	user_id	quantity	details	status	approval_details -->
-                                        <label>Item name (item id)</label>
-                                        <input class="form-control" type="text" name="item_id" autocomplete="off"
-                                            required />
+                                    <label>Item name (item id)</label>
+                                    <div class="list">
+                                        <select name="item_id">
+                                        <?php
+                                            $sql = "SELECT item_id,name FROM items";
+                                            $stmt = $pdo->query($sql);
+                                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                                $id = $row['item_id'];
+                                                $name = $row['name'];
+                                                echo "<option value='$id'>$name</option>";
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
+                                </div>
                                     <div class="form-group">
                                         <label>Quantity</label>
                                         <input class="form-control" type="number" name="quantity" autocomplete="off"

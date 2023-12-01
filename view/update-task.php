@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (strlen($_SESSION['alogin']) == 0) {
+if (strlen($_SESSION['login']) == 0) {
     header('location:index.php');
     return;
 } elseif (isset($_POST['update'])) {
@@ -9,15 +9,13 @@ if (strlen($_SESSION['alogin']) == 0) {
     $desc = filter_var($_POST['desc'], FILTER_SANITIZE_STRING);
     $status = filter_var($_POST['status'], FILTER_SANITIZE_STRING);
     $task_id = filter_var(intval($_GET['id']), FILTER_SANITIZE_STRING);
-    $sql = "UPDATE `tasks` SET `name`=:name,`desc`=:desc,`status`=:status WHERE `task_id`=:task_id";
+    $sql = "UPDATE `tasks` SET `status`=:status WHERE `task_id`=:task_id";
     $query = $pdo->prepare($sql);
-    $query->bindParam(':name', $name, PDO::PARAM_STR);
-    $query->bindParam(':desc', $desc, PDO::PARAM_STR);
     $query->bindParam(':status', $status, PDO::PARAM_STR);
     $query->bindParam(':task_id', $task_id, PDO::PARAM_STR);
     $query->execute();
     $_SESSION['msg'] = "Tasks updated successfully";
-    header('location:index.php?action=manage-tasks');
+    header('location:index.php?action=my-tasks');
     return;
 }
 ?>
@@ -64,12 +62,12 @@ if (strlen($_SESSION['alogin']) == 0) {
                                         <div class="form-group">
                                             <label>Task Name</label>
                                             <input class="form-control" type="text" name="name"
-                                                value="<?php echo htmlentities($result->name); ?>" required />
+                                                value="<?php echo htmlentities($result->name); ?>" required readonly/>
                                         </div>
                                         <div class="form-group">
                                             <label>Task Description</label>
                                             <input class="form-control" type="text" name="desc"
-                                                value="<?php echo htmlentities($result->desc); ?>" required />
+                                                value="<?php echo htmlentities($result->desc); ?>" required readonly/>
                                         </div>
                                         <div class="form-group">
                                             <label>Status</label>

@@ -1,4 +1,5 @@
 <?php
+session_start();
 if (strlen($_SESSION['alogin']) == 0) {
   header('location:index.php');
   return;
@@ -14,7 +15,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 </head>
 
 <body>
-  <?php include('includes/admin-menu.php'); ?>
+  <?php include('includes/user-menu.php'); ?>
 
   <div class="content-wrapper">
     <div class="container">

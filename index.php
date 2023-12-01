@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 //error_reporting(0);
 require_once('model/pdo.php');
 
@@ -42,9 +42,18 @@ switch ($action) {
     case 'edit-task':
         include('view/edit-task.php');
         break;
-        case 'edit-sales':
-            include('view/edit-sales.php');
-            break;
+    case 'update-task':
+        include('view/update-task.php');
+        break;
+    case 'edit-sales':
+        include('view/edit-sales.php');
+        break;
+    case 'update-items':
+        include('model/update-items.php');
+        break;
+    case 'edit-purchases':
+        include('view/edit-purchases.php');
+        break;
     case 'edit-inventory_req':
         include('view/edit-inventory_req.php');
         break;
@@ -65,6 +74,9 @@ switch ($action) {
         break;
     case 'manage-requests':
         include('view/manage-requests.php');
+        break;
+    case 'my-requests':
+        include('view/my-requests.php');
         break;
     case 'manage-tasks':
         include('view/manage-tasks.php');

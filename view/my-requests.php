@@ -1,22 +1,8 @@
 <?php
 session_start();
 //error_reporting(0);
-if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
+if (strlen($_SESSION['login']) == 0) {
     header('location:index.php');
-    return;
-} elseif (isset($_GET['del'])) {
-    if ($_SESSION['uid'] == 1000) {
-       
-        $id = filter_var($_GET['del'], FILTER_SANITIZE_STRING);
-        $sql = "DELETE FROM `assistance_req` WHERE `astn_req_id`=:id";
-        $query = $pdo->prepare($sql);
-        $query->bindParam(':id', $id, PDO::PARAM_STR);
-        $query->execute();
-        $_SESSION['msg'] = "Request deleted scuccessfully!!";
-    } else {
-        $_SESSION['error'] = "You dont have permissions to Delete!!";
-    }
-    header('location:index.php?action=manage-requests');
     return;
 }
 ?>
@@ -33,8 +19,6 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
 
     <?php
     if (strlen($_SESSION['login']) != 0) {
-        include 'includes/user-menu.php';
-    } else if (strlen($_SESSION['alogin']) != 0) {
         include 'includes/user-menu.php';
     }
     ?>
@@ -56,10 +40,9 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
                             </div>
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover"
-                                       >
+                                    <table class="table table-striped table-bordered table-hover">
                                         <thead>
-                                            <tr>
+                                           <tr>
                                                 <th>#</th>
                                                 <th>Request Details</th>
                                                 <th>Requested By</th>
@@ -67,12 +50,12 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
                                                 <th>Approval Details</th>
                                                 <th>Created Date</th>
                                                 <th>Updated Date</th>
-                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $sql = "SELECT * FROM assistance_req";
+                                            $uid=$_SESSION['uid'];
+                                            $sql = "SELECT * FROM `assistance_req` WHERE `user_id`=$uid";
                                             $query = $pdo->prepare($sql);
                                             $query->execute();
                                             $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -108,18 +91,6 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
                                                         </td>
                                                         <td class="center">
                                                             <?php echo htmlentities($result->updated_date); ?>
-                                                        </td>
-                                                        <td class="center">
-                                                            <a
-                                                                href="index.php?action=edit-approval&id=<?php echo htmlentities($result->astn_req_id); ?>">
-                                                                <button class="btn btn-primary"><i class="fa fa-edit">Edit</i>
-                                                                </button>
-                                                            </a>
-                                                            <a
-                                                                href="index.php?action=manage-requests&del=<?php echo htmlentities($result->astn_req_id); ?>">
-                                                                <button class="btn btn-danger"><i
-                                                                        class="fa fa-pencil">Delete</i></button>
-                                                            </a>
                                                         </td>
                                                     </tr>
                                                     <?php $cnt = $cnt + 1;

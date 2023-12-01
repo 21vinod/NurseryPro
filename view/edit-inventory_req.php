@@ -7,12 +7,12 @@ if (strlen($_SESSION['alogin']) == 0 && $_SESSION['login'] == 0) {
     return;
 } elseif (isset($_POST['update'])) {
    
-    $details = $_POST['details'];
-    $user_id = $_POST['user_id'];
-    $item_id = $_POST['item_id'];
-    $status = $_POST['status'];
-    $approval_details = $_POST['approval_details'];
-    $inv_req_id = intval($_POST['id']);
+    $details = filter_var($_POST['details'], FILTER_SANITIZE_STRING);
+    $user_id = filter_var($_POST['user_id'], FILTER_SANITIZE_STRING);
+    $item_id = filter_var($_POST['item_id'], FILTER_SANITIZE_STRING);
+    $status = filter_var($_POST['status'], FILTER_SANITIZE_STRING);
+    $approval_details = filter_var($_POST['approval_details'], FILTER_SANITIZE_STRING);
+    $inv_req_id = filter_var(intval($_POST['id']), FILTER_SANITIZE_STRING);
    //UPDATE `assistance_req` SET `details`='test req',`user_id`='1003',`status`='Approved' WHERE `inv_req_id`=3;
     $sql = "UPDATE `inventory_req` SET `details`=:details,`user_id`=:user_id,`item_id`=:item_id,`status`=:status, `approval_details`=:approval_details WHERE `inv_req_id`=:inv_req_id";
     $query = $pdo->prepare($sql);
@@ -40,7 +40,7 @@ if (strlen($_SESSION['alogin']) == 0 && $_SESSION['login'] == 0) {
 </head>
 
 <body>
-    <?php include('includes/admin-menu.php'); ?>
+    <?php include('includes/user-menu.php'); ?>
     <div class="content-wrapper">
         <div class="container">
             <div class="row pad-botm">
@@ -90,7 +90,6 @@ if (strlen($_SESSION['alogin']) == 0 && $_SESSION['login'] == 0) {
                                             <input class="form-control" type="text" name="quantity"
                                                 value="<?php echo htmlentities($result->quantity); ?>" required />
                                         </div>
-                                        <!-- //inventory_req: inv_req_id	item_id	user_id	quantity	details	status	approval_details -->
                                         <div class="form-group">
                                             <label>Status</label>
                                             <div class="list">

@@ -1,21 +1,9 @@
 <?php
+session_start();
 if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
     header('location:index.php');
     return;
-} elseif (isset($_GET['del'])) {
-    if ($_SESSION['uid'] == 1000) {
-        $id = $_GET['del'];
-        $sql = "DELETE FROM tasks WHERE task_id=:id";
-        $query = $pdo->prepare($sql);
-        $query->bindParam(':id', $id, PDO::PARAM_STR);
-        $query->execute();
-        $_SESSION['msg'] = "Task deleted successfully!!";
-    } else {
-        $_SESSION['error'] = "You dont have permissions to Edit or Delete!!";
-    }
-    header('location:index.php?action=manage-tasks');
-    return;
-}
+}  
 ?>
 
 <!DOCTYPE html>
@@ -32,11 +20,11 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
     if (strlen($_SESSION['login']) != 0) {
         include 'includes/user-menu.php';
     } else if (strlen($_SESSION['alogin']) != 0) {
-        include 'includes/admin-menu.php';
+        include 'includes/user-menu.php';
     }
     ?>
 
-    <!-- manage tasks -->
+
     <div class="content-wrapper">
         <div class="container">
             <div class="row pad-botm">
@@ -54,8 +42,7 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
                             </div>
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover"
-                                       >
+                                    <table class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
@@ -86,7 +73,12 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
                                                             <?php echo htmlentities($result->desc); ?>
                                                         </td>
                                                         <td class="center">
-                                                            <?php echo htmlentities($result->user_id); ?>
+                                                            <?php
+                                                            $sql = "SELECT first_name FROM users WHERE user_id=$result->user_id";
+                                                            $stmt = $pdo->query($sql);
+                                                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                                                            echo $row['first_name'];
+                                                            ?>
                                                         </td>
                                                         <td class="center">
                                                             <a href="#" class="btn btn-success btn-xs">
@@ -94,7 +86,8 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
                                                             </a>
                                                         </td>
                                                         <td class="center">
-                                                            <a href="index.php?action=edit-task&id=<?php echo htmlentities($result->task_id); ?>">
+                                                         <a
+                                                                href="index.php?action=edit-task&id=<?php echo htmlentities($result->task_id); ?>">
                                                                 <button class="btn btn-primary"><i class="fa fa-edit">Edit</i>
                                                                 </button>
                                                             </a>
@@ -104,7 +97,6 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
                                                                 <button class="btn btn-primary"><i class="fa fa-edit">Delete</i>
                                                                 </button>
                                                             </a>
-
                                                         </td>
                                                     </tr>
                                                     <?php $cnt = $cnt + 1;
@@ -122,7 +114,7 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
             </div>
         </div>
     </div>
-    <!-- manage tasks end -->
+
 
 
 

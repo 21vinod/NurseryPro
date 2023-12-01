@@ -6,16 +6,17 @@ if (strlen($_SESSION['alogin']) == 0 && $_SESSION['login'] == 0) {
     header('location:index.php');
     return;
 } elseif (isset($_POST['update'])) {
-   
-    $req_details = $_POST['req_details'];
-    $user_id = $_POST['user_id'];
-    $status = $_POST['status'];
-    $approval_details = $_POST['approval_details'];
-    $astn_req_id = intval($_POST['id']);
-   //UPDATE `assistance_req` SET `req_details`='test req',`user_id`='1003',`status`='Approved' WHERE `astn_req_id`=3;
+
+    $req_details = filter_var($_POST['req_details'], FILTER_SANITIZE_STRING);
+    $user_id = filter_var($_POST['user_id'], FILTER_SANITIZE_STRING);
+    $status = filter_var($_POST['status'], FILTER_SANITIZE_STRING);
+    $approval_details = filter_var($_POST['approval_details'], FILTER_SANITIZE_STRING);
+    $astn_req_id = filter_var(intval($_POST['id']), FILTER_SANITIZE_STRING);
+    
+    //UPDATE `assistance_req` SET `req_details`='test req',`user_id`='1003',`status`='Approved' WHERE `astn_req_id`=3;
     $sql = "UPDATE `assistance_req` SET `req_details`=:req_details,`user_id`=:user_id,`status`=:status, `approval_details`=:approval_details WHERE `astn_req_id`=:astn_req_id";
     $query = $pdo->prepare($sql);
-   
+
     $query->bindParam(':req_details', $req_details, PDO::PARAM_STR);
     $query->bindParam(':user_id', $user_id, PDO::PARAM_STR);
     $query->bindParam(':status', $status, PDO::PARAM_STR);
@@ -38,7 +39,7 @@ if (strlen($_SESSION['alogin']) == 0 && $_SESSION['login'] == 0) {
 </head>
 
 <body>
-    <?php include('includes/admin-menu.php'); ?>
+    <?php include('includes/user-menu.php'); ?>
     <div class="content-wrapper">
         <div class="container">
             <div class="row pad-botm">

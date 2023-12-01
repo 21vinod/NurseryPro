@@ -1,25 +1,41 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['color'])) {
+        $selectedColor = $_POST['color'];
+        setcookie('backgroundColor', $selectedColor, time() + 3600); //1 hour
+    }
+}
+$_COOKIE['backgroundColor'] = isset($_COOKIE['backgroundColor']) ? $_COOKIE['backgroundColor'] : "";
+$storedColor = $_COOKIE['backgroundColor']; 
+if ($storedColor) {
+    echo "<style>body { background-color: $storedColor; }</style>";
+}
+?>
+
 <div class="navbar navbar-inverse set-radius-zero">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand">
+            <a class="navbar-brand" href="index.php">
                 <img src="public/img/logo.png" />
             </a>
         </div>
-        <?php if ($_SESSION['login'] || $_SESSION['alogin']) { ?>
-            <div class="right-div">
+        <?php $_SESSION['login'] = isset($_SESSION['login']) ? $_SESSION['login'] : ""; ?>
+        <?php $_SESSION['alogin'] = isset($_SESSION['alogin']) ? $_SESSION['alogin'] : ""; ?>
+
+        <div class="right-div">
+            <form method="post" class="my-4" action="">
+                Background color: <button type="submit" name="color" value="lightblue">Light Blue</button>
+                <button type="submit" name="color" value="lightgreen">Light Green</button>
+                <button type="submit" name="color" value="white">No Color</button>
+            </form>
+            <?php if ($_SESSION['login'] || $_SESSION['alogin']) { ?>
                 <a href="index.php?action=logout" class="btn btn-danger pull-right">LOG OUT</a>
-            </div>
-        <?php } ?>
+            <?php } ?>
+        </div>
     </div>
 </div>
-<!-- LOGO HEADER END-->
-<?php if ($_SESSION['login']) {
-    ?>
+
+<?php if ($_SESSION['login']) { ?>
     <section class="menu-section">
         <div class="container">
             <div class="row ">
@@ -34,9 +50,6 @@
                                     <li role="presentation"><a role="menuitem" tabindex="-1"
                                             href="index.php?action=my-tasks">My
                                             Tasks</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-1"
-                                            href="index.php?action=manage-tasks">Manage
-                                            Tasks</a></li>
                                 </ul>
                             </li>
                             <li>
@@ -47,19 +60,8 @@
                                             href="index.php?action=add-request">Add
                                             Request</a></li>
                                     <li role="presentation"><a role="menuitem" tabindex="-1"
-                                            href="index.php?action=manage-requests">Manage
+                                            href="index.php?action=my-requests">MY
                                             Requests</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#" class="dropdown-toggle" id="ddlmenuItem" data-toggle="dropdown"> Account <i
-                                        class="fa fa-angle-down"></i></a>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="ddlmenuItem">
-                                    <li role="presentation"><a role="menuitem" tabindex="-1"
-                                            href="index.php?action=my-profile">My
-                                            Profile</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-1"
-                                            href="index.php?action=change-password">Change Password</a></li>
                                 </ul>
                             </li>
 
@@ -111,14 +113,17 @@
                                         <li role="presentation"><a role="menuitem" tabindex="-1"
                                                 href="index.php?action=manage-inventory_req">Manage Inventory Request</a></li>
                                         <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                href="index.php?action=inventory_req">Sales</a></li>
+                                                href="index.php?action=add-sales">Add Sales</a></li>
                                         <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                href="index.php?action=inventory_req">Purchases</a></li>
+                                                href="index.php?action=manage-sales">Manage Sales</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1"
+                                                href="index.php?action=add-purchases">Add Purchases</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1"
+                                                href="index.php?action=manage-purchases">Manage Purchases</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="index.php?action=reg-users">Reg User</a></li>
 
-                                <li><a href="index.php?action=admin-change-password">Change Password</a></li>
                             </ul>
                         </div>
                     </div>
@@ -135,7 +140,7 @@
                             <ul id="menu-top" class="nav navbar-nav navbar-right">
 
                                 <li><a href="index.php?action=home">Home</a></li>
-                                <li><a href="index.php?action=login">Login</a></li>
+                                <li><a href="index.php?action=login">Employee Login</a></li>
                                 <li><a href="index.php?action=signup">Signup</a></li>
 
                             </ul>

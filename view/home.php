@@ -1,8 +1,6 @@
 <?php
 session_start();
-//error_reporting(0);
 require_once('model/pdo.php');
-
 ?>
 
 <!DOCTYPE html>
@@ -20,38 +18,26 @@ require_once('model/pdo.php');
 
     <div class="content-wrapper">
         <div class="container">
-
-            <!-- <div class="row">
-                <div class="col-md-10 col-sm-8 col-xs-12 col-md-offset-1">
-                    <div id="carousel-example" class="carousel slide slide-bdr" data-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="item active">
-                                <img src="public/img/1.png" alt="" />
-                            </div>
-                            <div class="item">
-                                <img src="public/img/2.png" alt="" />
-                            </div>
-                            <div class="item">
-                                <img src="public/img/3.jpg" alt="" />
-                            </div>
-                        </div>
-                        <ol class="carousel-indicators">
-                            <li data-target="#carousel-example" data-slide-to="0" class="active"></li>
-                            <li data-target="#carousel-example" data-slide-to="1"></li>
-                            <li data-target="#carousel-example" data-slide-to="2"></li>
-                        </ol>
-                        <a class="left carousel-control" href="#carousel-example" data-slide="prev">
-                        </a>
-                        <a class="right carousel-control" href="#carousel-example" data-slide="next">
-                        </a>
-                    </div>
-                </div>
+            <div class="jumbotron">
+                <h2 class="display-4">Welcome to NurseryPro!</h2>
+                <p class="lead">We are delighted to have you with us. Explore the wonders of nature with our
+                    dedicated team.</p>
+                <hr class="my-4">
+                <p>For purchases and visits, contact us:</p>
+                <address>
+                    <strong>NurseryPro</strong><br>
+                    123 Green Street<br>
+                    Overland Park, KS 66213<br>
+                    <abbr title="Phone">P:(555) 123-4567</abbr>
+                </address>
             </div>
-            <hr /> -->
+        </div>
+
+        <div class="container">
             <?php include("includes/flash.php") ?>
             <div class="row pad-botm">
                 <div class="col-md-12">
-                    <h4 class="header-line">Available Plants</h4>
+                    <h4 class="header-line">Available Plants at this movement</h4>
                 </div>
             </div>
             <a name="ulogin"></a>
@@ -69,39 +55,56 @@ require_once('model/pdo.php');
                             <th scope="col">Quantity Available</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php
-                        $stmt = $pdo->query("SELECT * FROM items");
-                        $count = 0;
+                    <tbody id="dataTable">
+                        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                        <script>
+                            $(document).ready(function () {
+                                loadTableData(1);
+                                $(document).on('click', '.pagination a', function () {
+                                    var page = $(this).data('page');
+                                    loadTableData(page);
+                                });
 
-                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            $src = $row['image'];
-                            echo "<tr scope='row'><td>";
-                            echo (htmlentities(++$count));
-                            echo ("</td><td><img width='120' height='150' src='public/img/plants/$src' alt=''>");
+                                function loadTableData(page) {
+                                    $.getJSON('view/get-json-items.php', { page: page }, function (data) {
+                                        var html = "";
+                                        count = (page - 1) * 5;
+                                        $.each(data.records, function (key, val) {
+                                             src = "public/img/plants/"+val.image 
+                                            html += "<tr>";
+                                            html += "<td>" + ++count + "</td>";
+                                            html += "<td>" + "<img width='120' height='150' src="+src+" alt=''>" + "</td>";
+                                            html += "<td>" + val.name + "</td>";
+                                            html += "<td>" + val.desc + "</td>";
+                                            html += "<td>" + val.type + "</td>";
+                                            html += "<td> $" + val.price + "</td>";
+                                            html += "<td>" + val.avl_qty + "</td>";
+                                            html += "</tr>";
+                                        });
+                                        $('#dataTable').html(html);
 
-                            echo ("</td><td>");
-                            echo (htmlentities($row['name']));
-                            echo ("</td><td>");
-
-                            echo (htmlentities($row['desc']));
-                            echo ("</td><td>");
-                            echo (htmlentities($row['type']));
-                            echo ("</td><td>");
-                            echo ("$" . htmlentities($row['price']));
-                            echo ("</td><td>");
-                            echo (htmlentities($row['avl_qty']));
-                            echo ("</td><td>");
-                            echo ("</td></tr>");
-                        }
-                        ?>
-
+                                        var pagination = "";
+                                        for (var i = 1; i <= data.total_pages; i++) {
+                                            var activeClass = (i === page) ? 'active' : '';
+                                            pagination += "<a href='#' class='" + activeClass + "' data-page='" + i + "'>" + i + "</a>";
+                                        }
+                                        $('#pagination').html(pagination);
+                                    });
+                                }
+                            });
+                        </script>
 
                     </tbody>
+
+
                 </table>
+                <div class="pagination" id="pagination">
+                </div>
             </div>
         </div>
     </div>
+
+
 
     <?php include 'includes/footer.php'; ?>
 

@@ -1,26 +1,16 @@
 <?php
-include_once("pdo.php");
+// include_once("pdo.php");
 
 if (isset($_POST['signup'])) {
 
-    //Code for User ID
-    $count_my_page = ("user_id.txt");
-    $hits = file($count_my_page);
-    $hits[0]++;
-    $fp = fopen($count_my_page, "w");
-    fputs($fp, "$hits[0]");
-    fclose($fp);
-    $first_name = $_POST['first_name'];
-    $last_name = $_POST['last_name'];
-    $mobile = $_POST['mobile'];
-    $user_type = $_POST['user_type'];
-    $email = $_POST['email'];
-    $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
-    $status = 1; //let admin check the user type and approve/reject
-    // dont signup if email alrady exists or check with jquery
-
-  //  $sql = "INSERT INTO `users`(`first_name`, `last_name`, `email`, `password`, `mobile`, `user_type`, `status`) VALUES ('worker1','willow','worker1@gmail.com',:password,'+1 9876543210','admin','1')";
-
+    $first_name = filter_var($_POST['first_name'], FILTER_SANITIZE_STRING);
+    $last_name = filter_var($_POST['last_name'], FILTER_SANITIZE_STRING);;
+    $mobile = filter_var($_POST['mobile'], FILTER_SANITIZE_STRING);
+    $user_type = filter_var($_POST['user_type'], FILTER_SANITIZE_STRING);
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $status = 0; //let admin check the user type and approve/reject
+    
     $sql = "INSERT INTO  users(first_name,last_name,email,password,mobile,user_type,status) 
     VALUES(:first_name,:last_name,:email,:password,:mobile,:user_type,:status)";
     $query = $pdo->prepare($sql);
@@ -38,6 +28,8 @@ if (isset($_POST['signup'])) {
     } else {
         echo "<script>alert('Something went wrong. Please try again!!');</script>";
     }
+    header("Location: index.php?action=signup");
+    return;
 }
 
 ?>
@@ -62,7 +54,7 @@ if (isset($_POST['signup'])) {
         function checkAvailability() {
             $("#loaderIcon").show();
             jQuery.ajax({
-                url: "check_availability.php",
+                url: "model/check_availability.php",
                 data: 'emailid=' + $("#emailid").val(),
                 type: "POST",
                 success: function (data) {
@@ -77,9 +69,9 @@ if (isset($_POST['signup'])) {
 </head>
 
 <body>
-    
+
     <?php include('includes/user-menu.php'); ?>
-    
+
     <div class="content-wrapper">
         <div class="container">
             <div class="row pad-botm">
@@ -126,6 +118,8 @@ if (isset($_POST['signup'])) {
                                     <input class="form-control" type="email" name="email" id="emailid"
                                         onBlur="checkAvailability()" autocomplete="off" required />
                                     <span id="user-availability-status" style="font-size:12px;"></span>
+                                    <img id="loaderIcon" src="public/img/spinner.gif" height="25"
+                                        style="vertical-align: middle; display:none;">
                                 </div>
 
                                 <div class="form-group">
@@ -150,7 +144,7 @@ if (isset($_POST['signup'])) {
             </div>
         </div>
     </div>
-    
+
     <?php include 'includes/footer.php'; ?>
 </body>
 

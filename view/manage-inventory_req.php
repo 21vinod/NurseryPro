@@ -1,8 +1,9 @@
 <?php
+session_start();
 if (strlen($_SESSION['login']) == 0 && strlen($_SESSION['alogin']) == 0) {
     header('location:index.php');
 } elseif (isset($_GET['del'])) {
-    $id = $_GET['del'];
+    $id = filter_var($_GET['del'], FILTER_SANITIZE_STRING);
     //inventory_req: inv_req_id	item_id	user_id	quantity	details	status	approval_details
     $sql = "DELETE from inventory_req WHERE inv_req_id=:id";
     $query = $pdo->prepare($sql);
@@ -28,12 +29,12 @@ if (strlen($_SESSION['login']) == 0 && strlen($_SESSION['alogin']) == 0) {
     if (strlen($_SESSION['login']) != 0) {
         include 'includes/user-menu.php';
     } else if (strlen($_SESSION['alogin']) != 0) {
-        include 'includes/admin-menu.php';
+        include 'includes/user-menu.php';
     }
     ?>
 
 
-    <!-- manage tasks -->
+
     <div class="content-wrapper">
         <div class="container">
             <div class="row pad-botm">
@@ -51,8 +52,7 @@ if (strlen($_SESSION['login']) == 0 && strlen($_SESSION['alogin']) == 0) {
                             </div>
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover"
-                                       >
+                                    <table class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
@@ -76,13 +76,24 @@ if (strlen($_SESSION['login']) == 0 && strlen($_SESSION['alogin']) == 0) {
                                                     <tr class="odd gradeX">
                                                         <td class="center">
                                                             <?php echo htmlentities($cnt); ?>
-                                                            <!-- //inventory_req: item_id	user_id	quantity	details	status	approval_details -->
-                                                        </td> <!-- // inventory_req: id	item_name	quantity	description -->
+                                                           
+                                                        </td> 
                                                         <td class="center">
-                                                            <?php echo htmlentities($result->item_id); ?>
+
+                                                            <?php
+                                                            $sql = "SELECT name FROM items WHERE item_id=$result->item_id";
+                                                            $stmt = $pdo->query($sql);
+                                                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                                                            echo $row['name'];
+                                                            ?>
                                                         </td>
                                                         <td class="center">
-                                                            <?php echo htmlentities($result->user_id); ?>
+                                                            <?php
+                                                            $sql = "SELECT first_name FROM users WHERE user_id=$result->user_id";
+                                                            $stmt = $pdo->query($sql);
+                                                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                                                            echo $row['first_name'];
+                                                            ?>
                                                         </td>
                                                         <td class="center">
                                                             <?php echo htmlentities($result->quantity); ?>
@@ -124,7 +135,7 @@ if (strlen($_SESSION['login']) == 0 && strlen($_SESSION['alogin']) == 0) {
             </div>
         </div>
     </div>
-    <!-- manage tasks end -->
+
 
 
 

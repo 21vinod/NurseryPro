@@ -1,21 +1,22 @@
 <?php
+session_start();
 
 if (strlen($_SESSION['alogin']) == 0) {
     header('location:index.php');
 } elseif (isset($_GET['inid'])) {
-    $id = $_GET['inid'];
+    $id = filter_var($_GET['inid'], FILTER_SANITIZE_STRING);
     $status = 0;
     $sql = "UPDATE users SET status=:status  WHERE user_id=:id";
     $query = $pdo->prepare($sql);
     $query->bindParam(':id', $id, PDO::PARAM_STR);
     $query->bindParam(':status', $status, PDO::PARAM_STR);
     $query->execute();
-    
+
     $_SESSION['msg'] = "User blocked successfully";
     header('location:index.php?action=reg-users');
     return;
 } elseif (isset($_GET['id'])) {
-    $id = $_GET['id'];
+    $id = filter_var($_GET['id'], FILTER_SANITIZE_STRING);
     $status = 1;
     $sql = "UPDATE users SET status=:status  WHERE user_id=:id";
     $query = $pdo->prepare($sql);
@@ -39,7 +40,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 
 <body>
 
-    <?php include('includes/admin-menu.php'); ?>
+    <?php include('includes/user-menu.php'); ?>
 
     <div class="content-wrapper">
         <div class="container">

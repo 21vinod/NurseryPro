@@ -1,11 +1,12 @@
 <?php
+session_start();
 if (strlen($_SESSION['login']) == 0) {
     header('location:index.php');
 } else {
 
     if (isset($_POST['create'])) {
-        $req_details = $_POST['req_details'];
-        $user_id = $_POST['user_id'];
+        $req_details = filter_var($_POST['req_details'], FILTER_SANITIZE_STRING);
+        $user_id = filter_var($_POST['user_id'], FILTER_SANITIZE_STRING);
         $status = "Open";
         $approval_details = "";
         $sql = "INSERT INTO  `assistance_req` (`req_details`,`user_id`,`status`,`approval_details`) VALUES(:req_details,:user_id,:status,:approval_details)";
@@ -21,7 +22,7 @@ if (strlen($_SESSION['login']) == 0) {
         } else {
             $_SESSION['error'] = "Something went wrong. Please try again";
         }
-        header('location:index.php?action=manage-requests');
+        header('location:index.php?action=my-requests');
         return;
     }
 
@@ -66,18 +67,7 @@ if (strlen($_SESSION['login']) == 0) {
                                         <input class="form-control" type="text" name="user_id"
                                             value="<?PHP echo $_SESSION['uid'] ?>" autocomplete="off" readonly />
                                     </div>
-                                    <!-- <div class="form-group">
-                                        <label>Status</label>
-                                        <div class="list">
-                                            <select name="status">
-                                                <option value="Open">Open</option>
-                                                <option value="Approved">Approved</option>
-                                                <option value="Declines">Declines</option>
-                                                <option value="Need more details">Need more details</option>
-                                            </select>
-                                        </div>
-                                    </div> -->
-                                    <div class="form-group">
+                                      <div class="form-group">
                                         <label>Approval Details</label>
                                         <textarea class="form-control" type="text" name="approval_details"
                                             autocomplete="off" readonly></textarea>

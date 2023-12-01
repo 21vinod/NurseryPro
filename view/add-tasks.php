@@ -4,10 +4,10 @@ session_start();
 if (strlen($_SESSION['alogin']) == 0) {
     header('location:index.php');
 } elseif (isset($_POST['create_task'])) {
-    $name = $_POST['name'];
-    $status = $_POST['status'];
-    $assignedTo = $_POST['worker'];
-    $desc = $_POST['desc'];
+    $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+    $status = filter_var($_POST['status'], FILTER_SANITIZE_STRING);
+    $assignedTo = filter_var($_POST['worker'], FILTER_SANITIZE_STRING);
+    $desc = filter_var($_POST['desc'], FILTER_SANITIZE_STRING);
 
     //tasks: task_id	name	desc	user_id	status	created_date	updated_date
     $sql = "INSERT INTO `tasks`(`name`, `desc`, `user_id`, `status`) VALUES (:name,:desc,:user_id,:status)";
@@ -17,7 +17,7 @@ if (strlen($_SESSION['alogin']) == 0) {
     // return;
     $lastInsertId = $pdo->lastInsertId();
     if ($lastInsertId) {
-    $_SESSION['msg'] = "Task listed successfully";
+        $_SESSION['msg'] = "Task listed successfully";
     } else {
         $_SESSION['error'] = "Something went wrong. Please try again";
     }
@@ -35,9 +35,9 @@ if (strlen($_SESSION['alogin']) == 0) {
 
 <body>
 
-    <?php include 'includes/admin-menu.php'; ?>
+    <?php include 'includes/user-menu.php'; ?>
 
-    
+
     <div class="content-wrapper">
         <div class="container">
             <div class="row pad-botm">
@@ -65,7 +65,19 @@ if (strlen($_SESSION['alogin']) == 0) {
                                 </div>
                                 <div class="form-group">
                                     <label>Assigned Worker(Enter User ID)</label>
-                                    <input class="form-control" type="text" name="worker" autocomplete="off" placeholder="0" />
+                                    <div class="list">
+                                        <select name="worker">
+                                            <?php
+                                            $sql = "SELECT user_id,first_name FROM users";
+                                            $stmt = $pdo->query($sql);
+                                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                                $id = $row['user_id'];
+                                                $name = $row['first_name'];
+                                                echo "<option value='$id'>$name</option>";
+                                            }
+                                            ?>
+                                          </select>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Status</label>
@@ -86,7 +98,7 @@ if (strlen($_SESSION['alogin']) == 0) {
             </div>
         </div>
     </div>
-    
+
 
 
 

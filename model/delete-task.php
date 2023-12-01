@@ -8,7 +8,7 @@ require_once('model/pdo.php');
 
 if (isset($_GET['id'])) {
     if ($_SESSION['uid'] == 1000) {
-        $id = $_GET['id'];
+        $id = filter_var($_GET['del'], FILTER_SANITIZE_STRING);
         $sql = "DELETE FROM `tasks` WHERE `task_id`=:id";
         $query = $pdo->prepare($sql);
         $query->bindParam(':id', $id, PDO::PARAM_STR);

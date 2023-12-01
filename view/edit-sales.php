@@ -6,12 +6,12 @@ if (strlen($_SESSION['alogin']) == 0) {
     header('location:index.php');
     return;
 } elseif (isset($_POST['update'])) {
-    $customer_name = $_POST['customer_name'];
-    $mobile = $_POST['mobile'];
-    $item_id = $_POST['item_id'];
-    $quantity = $_POST['quantity'];
-    $status = $_POST['status'];
-    $trans_id = $_POST['id'];
+    $customer_name = filter_var($_POST['customer_name'], FILTER_SANITIZE_STRING);
+    $mobile = filter_var($_POST['mobile'], FILTER_SANITIZE_STRING);
+    $item_id = filter_var($_POST['item_id'], FILTER_SANITIZE_STRING);
+    $quantity = filter_var($_POST['quantity'], FILTER_SANITIZE_STRING);
+    $status = filter_var($_POST['status'], FILTER_SANITIZE_STRING);
+    $trans_id = filter_var($_POST['id'], FILTER_SANITIZE_STRING);
     $sql = "UPDATE `transactions` SET `customer_name`=:customer_name,`mobile`=:mobile,`item_id`=:item_id,`quantity`=:quantity,`status`=:status WHERE `trans_id`=:trans_id AND `type`='Sell'";
     $query = $pdo->prepare($sql);
     $query->bindParam(':customer_name', $customer_name, PDO::PARAM_STR);
@@ -21,7 +21,7 @@ if (strlen($_SESSION['alogin']) == 0) {
     $query->bindParam(':quantity', $quantity, PDO::PARAM_STR);
     $query->bindParam(':trans_id', $trans_id, PDO::PARAM_STR);
     $query->execute();
-    $_SESSION['msg'] = "Tasks updated successfully";
+    $_SESSION['msg'] = "Sale order updated successfully";
     header('location:index.php?action=manage-sales');
     return;
 }
@@ -36,7 +36,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 </head>
 
 <body>
-    <?php include('includes/admin-menu.php'); ?>
+    <?php include('includes/user-menu.php'); ?>
     <div class="content-wrapper">
         <div class="container">
             <div class="row pad-botm">
@@ -71,7 +71,6 @@ if (strlen($_SESSION['alogin']) == 0) {
                                             <input class="form-control" type="text" name="customer_name"
                                                 value="<?php echo htmlentities($result->customer_name); ?>" required />
                                         </div>
-                                        <!-- // sales: trans_id	customer_name	mobile	item_id	quantity	status	created_date	updated_date -->
                                         <div class="form-group">
                                             <label>Mobile</label>
                                             <input class="form-control" type="text" name="mobile"
@@ -79,8 +78,20 @@ if (strlen($_SESSION['alogin']) == 0) {
                                         </div>
                                         <div class="form-group">
                                             <label>Item ID</label>
-                                            <input class="form-control" type="text" name="item_id"
-                                                value="<?php echo htmlentities($result->item_id); ?>" required />
+                                             <div class="list">
+                                                <select name="item_id" id="item_id">
+                                                    <?php
+                                                    $sql = "SELECT item_id,name,price FROM items";
+                                                    $stmt = $pdo->query($sql);
+                                                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                                        $id = $row['item_id'];
+                                                        $name = $row['name'];
+                                                        $price = $row['price'];
+                                                        echo "<option value='$id'>$name -$$price</option>";
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label>Quantity</label>

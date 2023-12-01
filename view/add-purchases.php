@@ -1,16 +1,16 @@
 <?php
+session_start();
 if (strlen($_SESSION['alogin']) == 0) {
     header('location:index.php');
 } elseif (isset($_POST['create'])) {
-    $customer_name = $_POST['customer_name'];
-    $mobile = $_POST['mobile'];
-    $item_id = $_POST['item_id'];
-    $quantity = $_POST['quantity'];
-    $status = $_POST['status'];
+    $customer_name = filter_var($_POST['customer_name'], FILTER_SANITIZE_STRING);
+    $mobile = filter_var($_POST['mobile'], FILTER_SANITIZE_STRING);
+    $item_id = filter_var($_POST['item_id'], FILTER_SANITIZE_STRING);
+    $quantity = filter_var($_POST['quantity'], FILTER_SANITIZE_STRING);
+    $status = filter_var($_POST['status'], FILTER_SANITIZE_STRING);
     $type = "Buy";
-    $item_price = 1;
 
-    $sql = "INSERT INTO  transactions (Customer_name,mobile,item_id,quantity,status,type) VALUES(:customer_name,:mobile,:item_id,:quantity,:status,:type)";
+    $sql = "INSERT INTO  transactions (customer_name,mobile,item_id,quantity,status,type) VALUES(:customer_name,:mobile,:item_id,:quantity,:status,:type)";
     $query = $pdo->prepare($sql);
     $query->bindParam(':customer_name', $customer_name, PDO::PARAM_STR);
     $query->bindParam(':mobile', $mobile, PDO::PARAM_STR);
@@ -21,6 +21,7 @@ if (strlen($_SESSION['alogin']) == 0) {
     $query->execute();
 
     $_SESSION['msg'] = "Purchase Order Listed successfully";
+    include("model/update-items.php");
     header('location:index.php?action=manage-purchases');
     return;
 }
@@ -36,25 +37,34 @@ if (strlen($_SESSION['alogin']) == 0) {
         // Function to calculate and display multiplication
         function calculateMultiplication() {
             // Get the values from the input fields
-            var num1 = document.getElementById("quantity").value;
-            var num2 = document.getElementById("price").value;
+            // var num1 = document.getElementById("quantity").value;
+            // var num2 = document.getElementById("price").value;
 
-            nim1 = $('#quantity').val();
-            num2 = $('#price').val();
+            var num1 = $('#quantity').val();
+            var num2 = $('#price').val();
             // Perform multiplication
             var result = num1 * num2 * 1.06;
-
+            // alert("test "+result);
             // Display the result
             $('#total').empty().text(result);
         }
+        function displayPrice() {
+            // var num1 = document.getElementById("item_id").value;
+            // document.getElementById("price").value = num1;
 
+            var dropdown = document.getElementById("item_id");
+            var selectedOption = dropdown.options[dropdown.selectedIndex];
+            var selectedOptionText = selectedOption.text;
+            //alert("price "+selectedOptionText.split("$")[1].trim());
+            document.getElementById("price").value = selectedOptionText.split("$")[1].trim();
+        }
     </script>
 
 </head>
 
 <body>
 
-    <?php include 'includes/admin-menu.php'; ?>
+    <?php include 'includes/user-menu.php'; ?>
 
 
 
@@ -85,7 +95,20 @@ if (strlen($_SESSION['alogin']) == 0) {
                                 </div>
                                 <div class="form-group">
                                     <label>Item name(Item ID)</label>
-                                    <input class="form-control" type="text" name="item_id" autocomplete="on" required />
+                                     <div class="list">
+                                        <select name="item_id" id="item_id" onchange="displayPrice()">
+                                            <?php
+                                            $sql = "SELECT item_id,name,price FROM items";
+                                            $stmt = $pdo->query($sql);
+                                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                                $id = $row['item_id'];
+                                                $name = $row['name'];
+                                                $price = $row['price'];
+                                                echo "<option value='$id'>$name -$$price</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Quantity</label>
@@ -95,13 +118,12 @@ if (strlen($_SESSION['alogin']) == 0) {
                                 <div class="form-group">
                                     <label>Item Price (in USD)</label>
                                     <input class="form-control" type="number" id="price" name="item_price" value="0"
-                                        oninput="calculateMultiplication()" ; autocomplete="off" />
+                                        oninput="calculateMultiplication()" ; autocomplete="off" readonly />
                                 </div>
                                 <div class="form-group">
-                                    <label>Total Price (in USD)</label>.
+                                    <label>Total Price (in USD, inc tax)</label>.
                                     <div id="total" class="form-control" readonly></div>
-                                    <!-- <input class="form-control" type="number" id="total" name="total" autocomplete="off"
-                                            readonly /> -->
+                                 
                                 </div>
                                 <div class="form-group">
                                     <label>Status</label>

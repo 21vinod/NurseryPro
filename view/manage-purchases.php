@@ -1,14 +1,13 @@
 <?php
 session_start();
 //error_reporting(0);
-require_once('model/pdo.php');
 if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
     header('location:index.php');
     return;
 } elseif (isset($_GET['del'])) {
     if ($_SESSION['uid'] == 1000) {
         // echo "<sript>alert('tests')</script>";
-        $id = $_GET['del'];
+        $id = filter_var($_GET['del'], FILTER_SANITIZE_STRING);
         $sql = "DELETE FROM `transactions` WHERE `trans_id`=:id AND `type`='Buy'";
         $query = $pdo->prepare($sql);
         $query->bindParam(':id', $id, PDO::PARAM_STR);
@@ -36,7 +35,7 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
     if (strlen($_SESSION['login']) != 0) {
         include 'includes/user-menu.php';
     } else if (strlen($_SESSION['alogin']) != 0) {
-        include 'includes/admin-menu.php';
+        include 'includes/user-menu.php';
     }
     ?>
 
@@ -87,7 +86,7 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
                                                         <td class="center">
                                                             <?php echo htmlentities($cnt); ?>
                                                         </td>
-                                                        <!-- // sales: trans_id	customer_name	mobile	item_id	quantity	status	created_date	updated_date -->
+                                                      
                                                         <td class="center">
                                                             <?php echo htmlentities($result->customer_name); ?>
                                                         </td>
@@ -95,14 +94,24 @@ if (strlen($_SESSION['alogin']) == 0 && strlen($_SESSION['login']) == 0) {
                                                             <?php echo htmlentities($result->mobile); ?>
                                                         </td>
                                                         <td class="center">
-                                                            <?php echo htmlentities($result->item_id); ?>
+                                                        <?php
+                                                            $sql = "SELECT name FROM items WHERE item_id=$result->item_id";
+                                                            $stmt = $pdo->query($sql);
+                                                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                                                            echo $row['name'];
+                                                            ?>
                                                         </td>
                                                         <td class="center">
                                                             <?php echo htmlentities($result->quantity); ?>
                                                         </td>
 
                                                         <td class="center">
-                                                            <?php echo htmlentities($result->quantity * 1.062); ?>
+                                                        <?php
+                                                            $sql = "SELECT price FROM items WHERE item_id=$result->item_id";
+                                                            $stmt = $pdo->query($sql);
+                                                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                                                            
+                                                            echo htmlentities($result->quantity * $row['price'] * 1.062); ?>
                                                         </td>
                                                         <td class="center">
                                                             <a href="#" class="btn btn-success btn-xs">
