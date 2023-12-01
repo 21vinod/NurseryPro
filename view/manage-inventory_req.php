@@ -4,7 +4,6 @@ if (strlen($_SESSION['login']) == 0 && strlen($_SESSION['alogin']) == 0) {
     header('location:index.php');
 } elseif (isset($_GET['del'])) {
     $id = filter_var($_GET['del'], FILTER_SANITIZE_STRING);
-    //inventory_req: inv_req_id	item_id	user_id	quantity	details	status	approval_details
     $sql = "DELETE from inventory_req WHERE inv_req_id=:id";
     $query = $pdo->prepare($sql);
     $query->bindParam(':id', $id, PDO::PARAM_STR);

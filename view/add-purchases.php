@@ -34,28 +34,17 @@ if (strlen($_SESSION['alogin']) == 0) {
     <title>NurseryPro | Purchases</title>
     <?php include('view/includes/header.php'); ?>
     <script>
-        // Function to calculate and display multiplication
         function calculateMultiplication() {
-            // Get the values from the input fields
-            // var num1 = document.getElementById("quantity").value;
-            // var num2 = document.getElementById("price").value;
 
             var num1 = $('#quantity').val();
             var num2 = $('#price').val();
-            // Perform multiplication
             var result = num1 * num2 * 1.06;
-            // alert("test "+result);
-            // Display the result
             $('#total').empty().text(result);
         }
         function displayPrice() {
-            // var num1 = document.getElementById("item_id").value;
-            // document.getElementById("price").value = num1;
-
             var dropdown = document.getElementById("item_id");
             var selectedOption = dropdown.options[dropdown.selectedIndex];
             var selectedOptionText = selectedOption.text;
-            //alert("price "+selectedOptionText.split("$")[1].trim());
             document.getElementById("price").value = selectedOptionText.split("$")[1].trim();
         }
     </script>
@@ -65,8 +54,6 @@ if (strlen($_SESSION['alogin']) == 0) {
 <body>
 
     <?php include 'includes/user-menu.php'; ?>
-
-
 
     <div class="content-wrapper">
         <div class="container">

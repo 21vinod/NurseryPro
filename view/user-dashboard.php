@@ -28,13 +28,15 @@ if (strlen($_SESSION['login']) == 0) {
       </div>
 
       <div class="row">
-        <a href="index.php?action=manage-tasks">
+        <a href="index.php?action=my-tasks">
           <div class="col-md-4 col-sm-4 col-xs-6">
             <div class="alert alert-success back-widget-set text-center">
               <i class="fa fa-book fa-5x"></i>
               <?php
-              $sql = "SELECT task_id FROM tasks";
+              $uid = $_SESSION['uid'];
+              $sql = "SELECT task_id FROM tasks WHERE user_id=:uid";
               $query = $pdo->prepare($sql);
+              $query->bindParam(':uid', $uid, PDO::PARAM_STR);
               $query->execute();
               $results = $query->fetchAll(PDO::FETCH_OBJ);
               $listditems = $query->rowCount();
@@ -42,19 +44,19 @@ if (strlen($_SESSION['login']) == 0) {
               <h3>
                 <?php echo htmlentities($listditems); ?>
               </h3>
-              Tasks Listed
+              My Tasks
             </div>
           </div>
         </a>
 
-        <a href="index.php?action=manage-tasks">
+        <a href="index.php?action=my-requests">
           <div class="col-md-4 col-sm-4 col-xs-6">
             <div class="alert alert-warning back-widget-set text-center">
               <i class="fa fa-recycle fa-5x"></i>
               <?php
               $rsts = 0;
               $uid = $_SESSION['uid'];
-              $sql = "SELECT task_id FROM tasks WHERE user_id=:uid";
+              $sql = "SELECT astn_req_id FROM assistance_req WHERE user_id=:uid";
               $query = $pdo->prepare($sql);
               $query->bindParam(':uid', $uid, PDO::PARAM_STR);
               $query->execute();
@@ -65,7 +67,7 @@ if (strlen($_SESSION['login']) == 0) {
               <h3>
                 <?php echo htmlentities($returneditems); ?>
               </h3>
-              My Tasks
+              My Requests
             </div>
           </div>
         </a>

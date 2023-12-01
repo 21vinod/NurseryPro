@@ -4,7 +4,7 @@
 require_once('model/pdo.php');
 
 $action = isset($_GET['action']) ? $_GET['action'] : 'home';
-// Perform the specified action
+
 switch ($action) {
     case 'home':
         include('view/home.php');

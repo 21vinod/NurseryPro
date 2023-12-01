@@ -27,7 +27,7 @@ if (strlen($_SESSION['login']) == 0) {
         <div class="container">
             <div class="row pad-botm">
                 <div class="col-md-12">
-                    <h4 class="header-line">Manage Requests</h4>
+                    <h4 class="header-line">My Requests</h4>
                 </div>
                 <?php include('includes/flash.php'); ?>
 

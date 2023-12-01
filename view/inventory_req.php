@@ -10,8 +10,6 @@ if (strlen($_SESSION['alogin']) == 0) {
         $quantity =filter_var($_POST['quantity'], FILTER_SANITIZE_STRING); 
         $details =filter_var($_POST['details'], FILTER_SANITIZE_STRING);
         $status = "Open";
-        // inventory_req: id	item_id	quantity	details
-        //inventory_req: inv_req_id	item_id	user_id	quantity	details	status	approval_details
         $sql = "INSERT INTO  `inventory_req` (item_id,user_id,status, quantity, details) VALUES(:item_id,:user_id,:status,:quantity, :details)";
         $query = $pdo->prepare($sql);
         $query->bindParam(':item_id', $item_id, PDO::PARAM_STR);

@@ -51,10 +51,19 @@ if (strlen($_SESSION['alogin']) == 0) {
           <div class="col-md-3 col-sm-3 col-xs-6">
             <div class="alert alert-warning back-widget-set text-center">
               <i class="fa fa-recycle fa-5x"></i>
+              <?php
+              $type = "Sell";
+              $sql3 = "SELECT trans_id FROM transactions WHERE type=:type";
+              $query3 = $pdo->prepare($sql3);
+              $query3->bindParam(":type", $type);
+              $query3->execute();
+              $results3 = $query3->fetchAll(PDO::FETCH_OBJ);
+              $regstds = $query3->rowCount();
+              ?>
               <h3>
-                <?php echo "5" ?>
+                <?php echo htmlentities($regstds); ?>
               </h3>
-              Tasks Not Assigned Yet
+              Total Sales
             </div>
           </div>
         </a>

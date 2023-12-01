@@ -1,0 +1,354 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Dec 01, 2023 at 02:41 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `nurserypro`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `assistance_req`
+--
+
+CREATE TABLE `assistance_req` (
+  `astn_req_id` int(128) NOT NULL,
+  `req_details` varchar(128) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `status` varchar(64) NOT NULL,
+  `approval_details` varchar(256) DEFAULT NULL,
+  `created_date` timestamp NULL DEFAULT current_timestamp(),
+  `updated_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `assistance_req`
+--
+
+INSERT INTO `assistance_req` (`astn_req_id`, `req_details`, `user_id`, `status`, `approval_details`, `created_date`, `updated_date`) VALUES
+(2, 'test details', 1003, 'Open', '', '2023-11-26 00:53:39', '2023-11-26 00:53:39'),
+(3, 'test req2', 1003, 'Declines', 'not required', '2023-11-26 00:53:49', '2023-11-30 05:19:58'),
+(5, 'Need tools for plucking', 1005, 'Open', '', '2023-11-30 05:42:33', '2023-11-30 05:42:33'),
+(6, 'need tools 2', 1005, 'Open', '', '2023-11-30 18:47:05', '2023-11-30 18:47:05'),
+(7, 'test1', 1005, 'Open', '', '2023-11-30 23:58:01', '2023-11-30 23:58:01');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inventory_req`
+--
+
+CREATE TABLE `inventory_req` (
+  `inv_req_id` int(126) NOT NULL,
+  `item_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `quantity` int(128) NOT NULL,
+  `details` varchar(256) NOT NULL,
+  `status` varchar(64) NOT NULL,
+  `approval_details` varchar(256) DEFAULT NULL,
+  `created_date` timestamp NULL DEFAULT current_timestamp(),
+  `updated_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inventory_req`
+--
+
+INSERT INTO `inventory_req` (`inv_req_id`, `item_id`, `user_id`, `quantity`, `details`, `status`, `approval_details`, `created_date`, `updated_date`) VALUES
+(2, 4, 1000, 54, 'hg', 'Open', NULL, '2023-11-26 17:41:23', '2023-11-26 17:41:23'),
+(3, 5, 1000, 34, 'fg', 'Approved', 'informed vendor to delivery', '2023-11-26 18:33:02', '2023-11-26 18:36:44'),
+(5, 2, 1000, 5, 'res', 'Open', NULL, '2023-11-27 19:53:55', '2023-11-27 19:53:55');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `items`
+--
+
+CREATE TABLE `items` (
+  `item_id` int(11) NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `desc` varchar(256) DEFAULT NULL,
+  `type` varchar(128) NOT NULL,
+  `avl_qty` int(10) NOT NULL,
+  `price` int(10) NOT NULL,
+  `image` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `items`
+--
+
+INSERT INTO `items` (`item_id`, `name`, `desc`, `type`, `avl_qty`, `price`, `image`) VALUES
+(2, 'Rose', 'A classic flowering shrub with various colors and fragrances.', 'Shrub', -216, 13, 'rose.jpg'),
+(3, 'Lavender', 'Fragrant herb with tall spikes of purple flowers.', 'Herb', 130, 9, 'lavender.jpg'),
+(4, 'Fiddle Leaf Fig', 'Large-leaved indoor plant with a tree-like appearance.', 'Indoor Plant', 12, 35, 'fiddle_leaf_fig.jpg'),
+(5, 'Succulent Mix', 'Assortment of small, low-maintenance succulent plants.', 'Succulent', 100, 6, 'succulent_mix.jpg'),
+(6, 'Tomato Plant', 'Patio-friendly tomato plant suitable for container gardening.', 'Vegetable', 25, 7, 'tomato_plant.jpg'),
+(7, 'Bamboo', 'Fast-growing and versatile ornamental grass.', 'Ornamental Grass', 20, 19, 'bamboo.jpg'),
+(8, 'Peace Lily', 'Indoor plant with elegant white blooms and air-purifying qualities.', 'Indoor Plant', 40, 15, 'peace_lily.jpg'),
+(9, 'Dwarf Citrus Tree', 'Compact citrus tree suitable for small gardens or pots.', 'Tree', 10, 23, 'dwarf_citrus_tree.jpg'),
+(10, 'Hosta', 'Shade-loving perennial with attractive foliage.', 'Perennial', 35, 10, 'hosta.jpg'),
+(11, 'Aloe Vera', 'Succulent known for its soothing gel and air-purifying qualities.', 'Succulent', 50, 8, 'aloe_vera.jpg'),
+(12, 'Spider Plant', 'Easy-to-care-for indoor plant with arching leaves.', 'Indoor Plant', 60, 6, 'spider_plant.jpg'),
+(13, 'Japanese Maple', 'Ornamental tree with vibrant foliage.', 'Tree', 18, 29, 'japanese_maple.jpg'),
+(14, 'Mint', 'Aromatic herb with a refreshing scent.', 'Herb', 45, 5, 'mint.jpg'),
+(15, 'Snake Plant', 'Hardy indoor plant with upright leaves.', 'Indoor Plant', 55, 11, 'snake_plant.jpg'),
+(16, 'Daffodil Bulbs', 'Spring-blooming bulbs with cheerful yellow flowers.', 'Bulb', 80, 4, 'daffodil_bulbs.jpg'),
+(17, 'Cactus Mix', 'Assortment of small cacti with various shapes and sizes.', 'Cactus', 70, 7, 'cactus_mix.jpg'),
+(18, 'Hydrangea', 'Deciduous shrub with large, showy flower clusters.', 'Shrub', 22, 17, 'hydrangea.jpg'),
+(19, 'Pothos', 'Low-maintenance trailing plant, perfect for hanging baskets.', 'Indoor Plant', 48, 8, 'pothos.jpg'),
+(20, 'Blueberry Bush', 'Fruit-bearing shrub with delicious blueberries.', 'Shrub', 28, 15, 'blueberry_bush.jpg'),
+(21, 'Marigold', 'Annual flower with bright orange and yellow blooms.', 'Flower', 65, 5, 'marigold.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tasks`
+--
+
+CREATE TABLE `tasks` (
+  `task_id` int(11) NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `desc` varchar(256) DEFAULT NULL,
+  `user_id` int(11) DEFAULT 0,
+  `status` char(64) NOT NULL,
+  `created_date` timestamp NULL DEFAULT current_timestamp(),
+  `updated_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tasks`
+--
+
+INSERT INTO `tasks` (`task_id`, `name`, `desc`, `user_id`, `status`, `created_date`, `updated_date`) VALUES
+(13, 'test122', 'desc122', 1001, 'InProgress', '2023-11-25 19:53:22', '2023-11-27 19:45:51'),
+(14, 'Marigold unload', 'unload marigold saplings', 1001, 'InProgress', '2023-11-27 19:41:42', '2023-12-01 00:00:03'),
+(15, 'plucking', 'test', 1005, 'InProgress', '2023-11-30 05:16:01', '2023-11-30 23:57:48'),
+(16, 'load flower plants', 'load flower plants', 1005, 'Assigned', '2023-11-30 23:59:23', '2023-11-30 23:59:23');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transactions`
+--
+
+CREATE TABLE `transactions` (
+  `trans_id` int(128) NOT NULL,
+  `customer_name` varchar(256) NOT NULL,
+  `mobile` char(14) NOT NULL,
+  `item_id` int(11) DEFAULT NULL,
+  `quantity` int(128) NOT NULL,
+  `status` varchar(64) NOT NULL,
+  `type` varchar(20) NOT NULL,
+  `created_date` timestamp NULL DEFAULT current_timestamp(),
+  `updated_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`trans_id`, `customer_name`, `mobile`, `item_id`, `quantity`, `status`, `type`, `created_date`, `updated_date`) VALUES
+(3, 'sss1243', '11112', 2, 22, 'Paid', 'Sell', '2023-11-27 02:15:24', '2023-11-27 17:14:10'),
+(7, 'p3343', '546546564', 2, 10, 'Paid', 'Buy', '2023-11-27 17:04:20', '2023-11-30 20:26:15'),
+(8, 'vinod', '9874654654', 6, 4, 'Paid', 'Sell', '2023-11-30 19:14:50', '2023-11-30 19:50:30'),
+(9, 'vin3', '9876546556', 10, 3, 'Paid', 'Sell', '2023-11-30 19:58:45', '2023-11-30 19:59:47'),
+(10, 'ABS traders', '9875466545', 3, 20, 'Paid', 'Buy', '2023-11-30 20:21:52', '2023-11-30 20:25:58'),
+(11, 'Vinod4', '9879865456', 2, 3, 'Paid', 'Sell', '2023-11-30 20:40:37', '2023-11-30 20:40:37'),
+(12, 'vinod5', '98765465465', 2, 3, 'Paid', 'Sell', '2023-11-30 20:55:55', '2023-11-30 20:55:55'),
+(13, 'vinod', '987654321352', 2, 2, 'Paid', 'Sell', '2023-11-30 20:58:38', '2023-11-30 20:58:38'),
+(14, 'vinod6', '9876543215', 2, 3, 'Paid', 'Sell', '2023-11-30 20:59:58', '2023-11-30 20:59:58'),
+(15, 'test2', '9876543214', 2, 10, 'Paid', 'Sell', '2023-11-30 21:03:02', '2023-11-30 21:03:02'),
+(16, 'test3', '98754654321', 2, 2, 'Paid', 'Sell', '2023-11-30 21:05:15', '2023-11-30 21:05:15'),
+(17, 'test7', '9876546547', 2, 3, 'Paid', 'Sell', '2023-11-30 21:36:23', '2023-11-30 21:36:23'),
+(18, 'test77', '9876543214', 2, 3, 'Paid', 'Sell', '2023-11-30 21:36:59', '2023-11-30 21:36:59'),
+(19, 'test88', '9874568987', 2, 4, 'Paid', 'Sell', '2023-11-30 21:41:35', '2023-11-30 21:41:35'),
+(20, 'tesre44', '1242342344', 2, 4, 'Paid', 'Sell', '2023-11-30 21:49:47', '2023-11-30 21:49:47'),
+(21, 'tesre444', '1242342344', 2, 3, 'Paid', 'Sell', '2023-11-30 21:50:57', '2023-11-30 21:50:57'),
+(22, 'test555', '555', 2, 5, 'Paid', 'Sell', '2023-11-30 21:54:03', '2023-11-30 21:54:03'),
+(23, 'trest666', '575445', 2, 55, 'Paid', 'Sell', '2023-11-30 21:54:44', '2023-11-30 21:54:44'),
+(24, '34s', '234', 3, 100, 'Paid', 'Sell', '2023-11-30 21:55:52', '2023-11-30 21:55:52'),
+(25, 'ab traders', '9874988978', 2, 100, 'Paid', 'Buy', '2023-11-30 21:57:50', '2023-11-30 21:57:50'),
+(26, 'ABC 444', '8987989879', 2, 100, 'Paid', 'Buy', '2023-11-30 21:58:32', '2023-11-30 21:58:32'),
+(27, 'testre23', '2342', 3, 200, 'Paid', 'Buy', '2023-11-30 22:05:04', '2023-11-30 22:05:04'),
+(28, 'tes', '45', 4, 3, 'Paid', 'Sell', '2023-12-01 00:00:22', '2023-12-01 00:00:22');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL,
+  `first_name` varchar(120) NOT NULL,
+  `last_name` varchar(120) NOT NULL,
+  `email` varchar(120) NOT NULL,
+  `password` varchar(120) NOT NULL,
+  `mobile` char(14) NOT NULL,
+  `user_type` varchar(50) NOT NULL,
+  `status` char(64) NOT NULL,
+  `street` varchar(120) DEFAULT NULL,
+  `city` varchar(60) DEFAULT NULL,
+  `state` varchar(60) DEFAULT NULL,
+  `zip` int(10) DEFAULT NULL,
+  `created_date` timestamp NULL DEFAULT current_timestamp(),
+  `updated_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `access_count` int(128) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `first_name`, `last_name`, `email`, `password`, `mobile`, `user_type`, `status`, `street`, `city`, `state`, `zip`, `created_date`, `updated_date`, `access_count`) VALUES
+(0, 'Unassigned', 'Unassigned', 'Unassigned', 'Unassigned', 'Unassigned', 'Unassigned', '0', NULL, NULL, NULL, NULL, '2023-11-25 19:46:36', '2023-11-27 19:40:35', 0),
+(1000, 'Admin', 'Administrator', 'admin@gmail.com', '$2y$10$otlSOOeJ88DKTAx.QvlFGuTuCjgAic07.5fNg2AG1qNquYG9UgIoi', '+1 9876543210', 'admin', '1', 'Innovate parkway 1101', 'Lees Summit', 'Missouri', 64002, '0000-00-00 00:00:00', '2023-12-01 01:27:37', 59),
+(1001, 'worker1', 'willow', 'worker@gmail.com', '$2y$10$YxxrqbtX33X7IQRjl1/6WOatylCKun7VQZ4milmHC/TxdlzaIesfm', '9884865312', 'worker', '1', NULL, NULL, NULL, NULL, '2023-11-20 02:09:25', '2023-11-27 02:55:49', 0),
+(1003, 'test', 'user', 'test@gmail.com', '$2y$10$BxR4D65L5yN7uzEgQero7.GV.riM7e4/0c/bbTylHX.n.Ejf8EUdG', '9876543210', 'user', '1', NULL, NULL, NULL, NULL, '2023-11-24 23:06:36', '2023-11-27 02:55:45', 0),
+(1005, 'user1', 'lastname', 'user1@gmail.com', '$2y$10$Nm0p/wFWe1qwJDi3lynjnOjGg56yIe3SH1hIZngtq0w27eB/MCGzi', '9876543512', 'worker', '1', NULL, NULL, NULL, NULL, '2023-11-30 05:40:06', '2023-12-01 01:28:27', 2),
+(1010, 'user3', 'lastname', 'user3@gmail.com', '$2y$10$F6OCb4p9IE5xLzN07KJnhue4asV8xTFowYCHqxe.KgY0OpJ7kcEpK', '9876543512', 'worker', '0', NULL, NULL, NULL, NULL, '2023-12-01 01:33:44', '2023-12-01 01:33:44', 0),
+(1011, 'user2', 'lastname', 'user2@gmail.com', '$2y$10$wQ92lPo2EenRkhgQxNGa9u6hTLqIkGWJf.RJEJtYLDTIyaBFVQBF6', '9876543512', 'worker', '0', NULL, NULL, NULL, NULL, '2023-12-01 01:34:05', '2023-12-01 01:34:05', 0),
+(1012, 'user4', 'lastname', 'user4@gmail.com', '$2y$10$87isgjLywMYCff9FI9LfJeIWthN3vriGvJrik1ZlOr7p.q2xjpbgS', '9876543512', 'worker', '0', NULL, NULL, NULL, NULL, '2023-12-01 01:34:24', '2023-12-01 01:34:24', 0),
+(1013, 'user5', 'lastname', 'user5@gmail.com', '$2y$10$B4ky9oMwNIsDuSrHjlawpu/7WNE/DtpZ5dzN.IWOtYvDOPOuT4sk6', '9876543512', 'worker', '0', NULL, NULL, NULL, NULL, '2023-12-01 01:34:43', '2023-12-01 01:34:43', 0),
+(1014, 'user6', 'lastname', 'user6@gmail.com', '$2y$10$vLzV9CPWhpgNnL9MAlTOEuVVPoX1waTu2udkjMK/563P/GZTUdPZa', '9876543512', 'worker', '0', NULL, NULL, NULL, NULL, '2023-12-01 01:35:00', '2023-12-01 01:35:00', 0),
+(1015, 'user7', 'lastname', 'user7@gmail.com', '$2y$10$DX.IEROw2bM5v9FlG4PSfeF.IqPHo.C.tFXualyU7CuWw39UnpraK', '9876543512', 'worker', '0', NULL, NULL, NULL, NULL, '2023-12-01 01:35:18', '2023-12-01 01:35:18', 0);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `assistance_req`
+--
+ALTER TABLE `assistance_req`
+  ADD PRIMARY KEY (`astn_req_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `inventory_req`
+--
+ALTER TABLE `inventory_req`
+  ADD PRIMARY KEY (`inv_req_id`),
+  ADD KEY `item_id` (`item_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `items`
+--
+ALTER TABLE `items`
+  ADD PRIMARY KEY (`item_id`),
+  ADD KEY `name` (`name`);
+
+--
+-- Indexes for table `tasks`
+--
+ALTER TABLE `tasks`
+  ADD PRIMARY KEY (`task_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `name` (`name`);
+
+--
+-- Indexes for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD PRIMARY KEY (`trans_id`),
+  ADD KEY `item_id` (`item_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`),
+  ADD KEY `first_name` (`first_name`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `assistance_req`
+--
+ALTER TABLE `assistance_req`
+  MODIFY `astn_req_id` int(128) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `inventory_req`
+--
+ALTER TABLE `inventory_req`
+  MODIFY `inv_req_id` int(126) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `items`
+--
+ALTER TABLE `items`
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `tasks`
+--
+ALTER TABLE `tasks`
+  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `transactions`
+--
+ALTER TABLE `transactions`
+  MODIFY `trans_id` int(128) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1016;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `assistance_req`
+--
+ALTER TABLE `assistance_req`
+  ADD CONSTRAINT `assistance_req_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `inventory_req`
+--
+ALTER TABLE `inventory_req`
+  ADD CONSTRAINT `inventory_req_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `inventory_req_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tasks`
+--
+ALTER TABLE `tasks`
+  ADD CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`) ON UPDATE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

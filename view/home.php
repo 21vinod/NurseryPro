@@ -60,13 +60,14 @@ require_once('model/pdo.php');
                         <script>
                             $(document).ready(function () {
                                 loadTableData(1);
+                                
                                 $(document).on('click', '.pagination a', function () {
                                     var page = $(this).data('page');
                                     loadTableData(page);
                                 });
 
                                 function loadTableData(page) {
-                                    $.getJSON('view/get-json-items.php', { page: page }, function (data) {
+                                    $.getJSON('model/get-json-items.php', { page: page }, function (data) {
                                         var html = "";
                                         count = (page - 1) * 5;
                                         $.each(data.records, function (key, val) {

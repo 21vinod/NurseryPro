@@ -17,15 +17,17 @@ if (isset($_POST['login'])) {
     $query = $pdo->prepare($sql);
     $query->execute(array(":email" => $email));
     $result = $query->fetch(PDO::FETCH_ASSOC);
-    
+
     if ($query->rowCount() > 0 && password_verify($password, $result['password'])) {
         $_SESSION['uid'] = $result['user_id'];
         if ($result['status'] == 1 && $_SESSION['uid'] == 1000) {
             $_SESSION['alogin'] = $_POST['emailid'];
+            updateUserAccessCount($pdo, $result['user_id'], getUserAccessCount($pdo, $result['user_id']));
             header("Location:index.php?action=admin-dashboard");
             return;
         } else if ($result['status'] == 1) {
             $_SESSION['login'] = $_POST['emailid'];
+            updateUserAccessCount($pdo, $result['user_id'], getUserAccessCount($pdo, $result['user_id']));
             header("Location:index.php?action=user-dashboard");
             return;
         } else {
@@ -39,6 +41,35 @@ if (isset($_POST['login'])) {
         return;
     }
 }
+
+//$pdo = isset($pdo)?$pdo:"";
+function getUserAccessCount($pdo, $user_id)
+{
+    $stmt = $pdo->prepare("SELECT `access_count` FROM `users` WHERE `user_id` = :user_id");
+    $stmt->bindParam(":user_id", $user_id);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result ? $result['access_count'] : 0;
+}
+
+function updateUserAccessCount($pdo, $user_id, $accessCount)
+{
+    $accessCount = $accessCount + 1;
+    $_SESSION['access_count'] = $accessCount;
+    $stmt = $pdo->prepare("UPDATE users SET `access_count`=:access_count WHERE `user_id`=:user_id;");
+    $stmt->bindParam(":user_id", $user_id);
+    $stmt->bindParam(":access_count", $accessCount);
+    $stmt->execute();
+}
+
+// $userId = $_SESSION['uid'];
+// $accessCount = getUserAccessCount($pdo, $userId);
+// $accessCount++;
+
+// updateUserAccessCount($pdo, $userId, $accessCount);
+
+// echo "Welcome! You have visited $accessCount times.";
+
 ?>
 
 <!DOCTYPE html>
